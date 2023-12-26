@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Game.cs~RF98e7769.TMP" />
+    <None Remove="Move.cs~RF26f2d3.TMP" />
+    <None Remove="ExecuteMoves\Castle.cs~RF148c24a.TMP" />
+    <None Remove="ExecuteMoves\EnPassant.cs~RFde3cb3.TMP" />
+    <None Remove="ExecuteMoves\Move.cs~RF1ba6e042.TMP" />
+    <None Remove="ExecuteMoves\Move.cs~RFac3ef8.TMP" />
+    <None Remove="ExecuteMoves\Move.cs~RFb99db3.TMP" />
+    <None Remove="ExecuteMoves\Move.cs~RFbd6e52.TMP" />
+    <None Remove="ExecuteMoves\SingleMove.cs~RFb05329.TMP" />
+    <None Remove="Piece.cs~RF148038dc.TMP" />
+    <None Remove="Piece.cs~RF9af6845.TMP" />
+    <None Remove="Piece.cs~RFbe4c2f.TMP" />
+    <None Remove="todo.txt~RF10a42f0e.TMP" />
+    <None Remove="todo.txt~RF1a2985ac.TMP" />
+  </ItemGroup>
+
+</Project>

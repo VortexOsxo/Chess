@@ -1,0 +1,6 @@
+﻿
+
+TODO	Detect End of game state (draw/win)
+DONE	Allow to revert move properly (state)
+DONE	Make sure that castle is impossible when the king traverse a square that would put him in check
+DONE	When a rook is eaten castle is still available 
