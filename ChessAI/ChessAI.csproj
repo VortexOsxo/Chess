@@ -14,8 +14,4 @@
     <ProjectReference Include="..\ChessCore\ChessCore.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Search\" />
-  </ItemGroup>
-
 </Project>

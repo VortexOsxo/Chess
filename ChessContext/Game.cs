@@ -39,9 +39,9 @@ namespace ChessContext
             return state.whiteToPlay == true ? ChessCore.Piece.White : ChessCore.Piece.Black;
         }
 
-        public List<Move> GetValidMoveFrom(int positon)
+        public List<Move> GetValidMoveFrom(int position)
         {
-            List<int> moves = finder.FindAllMovesFromPosition(positon);
+            List<int> moves = finder.FindAllMovesFromPosition(position);
             List<Move> movesObject = new List<Move>();
             foreach (int move in moves) 
             {
@@ -58,32 +58,31 @@ namespace ChessContext
         public void PlayPlayerMove(Move move)
         {
             PlayMove(move.GetMove());
-            //if (result == Result.InProgress)
-            //    PlayComputerMove();
         }
 
-        public void PlayMove(int move)
+        private void PlayMove(int move)
         {
-            state.whiteToPlay = !state.whiteToPlay;
             int playedMove = MoveHelper.ExecuteMove(state, move);
 
-            if (finder.FindAllMoves().Count == 0) // Reset le castle black right flag 
+            if (finder.FindAllMoves().Count == 0)
             {
+                state.whiteToPlay = !state.whiteToPlay;
                 if (ValidState.IsStateValid(state))
                 {
                     result = Result.Draw;
                 }
                 else
                 {
-                    result = state.whiteToPlay ? Result.BlackWin : Result.WhiteWin;
+                    result = state.whiteToPlay ? Result.WhiteWin : Result.BlackWin;
                 }
             }
         }
 
-        private void PlayComputerMove()
+        public Move PlayComputerMove()
         {
             int move = AIPlayer.GetBestMove(state);
             PlayMove(move);
+            return new Move(move);
         }
     }
 }

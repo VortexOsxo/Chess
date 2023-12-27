@@ -85,10 +85,12 @@ namespace ChessView
             while (window.IsOpen)
             {
                 window.DispatchEvents();
-                window.Clear(backgroundColor);
 
+                window.Clear(backgroundColor);
                 Draw();
                 window.Display();
+
+                state = state.Update();
             }
         }
 

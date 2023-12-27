@@ -20,7 +20,7 @@ namespace ChessView.ViewState
 
             promotionMove.ChangePromotionType(piece);
             game.PlayPlayerMove(promotionMove);
-            return new Neutral();
+            return new ComputerTurn(promotionMove);
         }
 
         override public void Draw(RenderWindow window) 

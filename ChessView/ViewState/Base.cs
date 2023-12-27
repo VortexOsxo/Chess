@@ -23,5 +23,7 @@ namespace ChessView.ViewState
         abstract public Base HandleClick(SFML.Window.MouseButtonEventArgs e);
 
         virtual public void Draw(RenderWindow window) { }
+
+        virtual public Base Update() { return this; }
     }
 }

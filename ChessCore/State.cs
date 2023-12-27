@@ -11,8 +11,8 @@ namespace ChessCore
         internal const int kingMove = 2;
         internal const int rRookMove = 4;
 
-        internal const int canCastleLeft = 3;
-        internal const int canCastleRight = 6;
+        public const int canCastleLeft = 3;
+        public const int canCastleRight = 6;
 
         public int[] board = new int[64];
 

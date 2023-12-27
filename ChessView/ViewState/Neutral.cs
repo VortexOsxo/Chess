@@ -1,12 +1,18 @@
 ﻿using ChessCore;
+using ChessCore.Moves;
 
 namespace ChessView.ViewState
 {
     internal class Neutral : Base
     {
-        public Neutral()
+        public Neutral(Move? lastMove = null)
         {
             highlighted = new bool[64];
+            if (lastMove != null)
+            {
+                highlighted[lastMove.GetStartPosition()] = true;
+                highlighted[lastMove.GetEndPosition()] = true;
+            }
         }
 
         override public Base HandleClick(SFML.Window.MouseButtonEventArgs e)

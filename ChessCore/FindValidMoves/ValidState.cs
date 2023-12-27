@@ -5,7 +5,7 @@ namespace ChessCore.FindValidMoves
     {
         static public bool IsStateValid(State state)
         {
-            int colorChecked = state.whiteToPlay ? Piece.White : Piece.Black;
+            int colorChecked = state.whiteToPlay ? Piece.Black : Piece.White;
             int kingPosition = -1;
             for (int i = 0; i < 64; i++)
             {
@@ -17,7 +17,7 @@ namespace ChessCore.FindValidMoves
                 }
             }
             if (kingPosition == -1) return false;
-            return !IsPositionAttackedBy(state, state.whiteToPlay ? Piece.Black : Piece.White, kingPosition);
+            return !IsPositionAttackedBy(state, state.whiteToPlay ? Piece.White : Piece.Black, kingPosition);
         }
 
         static public bool IsPositionAttackedBy(State state, int colorChecked, int kingPosition) 

@@ -27,8 +27,6 @@ namespace ChessCore.Moves
 
         private const int TagFilter = 0x003F0000;
 
-        static int eatenPiece = 0;
-
 
         static public int CreateMove(int startPos, int endPos, int type = 1, int args = 0) 
         {
@@ -46,8 +44,11 @@ namespace ChessCore.Moves
 
         static public int ExecuteMove(State state, int move)
         {
+            state.whiteToPlay = !state.whiteToPlay;
             int endPosition = GetEndPos(move);
             int startPosition = GetStartPos(move);
+
+            int eatenPiece = 0;
 
             move = SetOldEnPassant(move, (state.GetFlags() & (0xf << 6))>>6);
             state.RemoveFlags(((1 << 14) - 1) << 6);
@@ -93,7 +94,6 @@ namespace ChessCore.Moves
                     state.board[60] = 0;
                     
                     state.AddFlags(State.kingMove);
-                    eatenPiece = 0;
                     break;
 
                 case Castlewr:
@@ -103,7 +103,6 @@ namespace ChessCore.Moves
                     state.board[60] = 0;
 
                     state.AddFlags(State.kingMove);
-                    eatenPiece = 0;
                     break;
 
                 case Castlebl:
@@ -113,7 +112,6 @@ namespace ChessCore.Moves
                     state.board[4] = 0;
 
                     state.AddFlags(State.kingMove << 3);
-                    eatenPiece = 0;
                     break;
 
                 case Castlebr:
@@ -123,19 +121,23 @@ namespace ChessCore.Moves
                     state.board[4] = 0;
 
                     state.AddFlags(State.kingMove << 3);
-                    eatenPiece = 0;
                     break;
 
                 default:
                     break;
             }
+
+            move = SetEatenPiece(move, eatenPiece);
             return move;
         }
 
         static public void RevertMove(State state, int move)
         {
+            state.whiteToPlay = !state.whiteToPlay;
             int endPosition = GetEndPos(move);
             int startPosition = GetStartPos(move);
+
+            int eatenPiece = GetEateanPiece(move);
 
             switch(GetMoveType(move))
             {
@@ -202,7 +204,7 @@ namespace ChessCore.Moves
             state.AddFlags((GetEnPassant(move) << 6));
         }
 
-        static private int GetStartPos(int move) 
+        static public int GetStartPos(int move) 
         {
             return (move & StartPosFilter) >> 10;
         }
@@ -239,9 +241,24 @@ namespace ChessCore.Moves
                     return 1;
                 case 2: // En Passant
                     return (tags >> 2) << 6; // Position = tags >> 2 and then << 6 to give space for castle
+                case 3: // Promotion
+                    return (tags >> 2);
+
                 default:
                     return 0;
             }
+        }
+
+        static public int SetEatenPiece(int move, int eatenPiece) // We should still have enough space to add the color directly in there
+        {
+            move &= ~(0x1F << 23);
+            move |= (eatenPiece << 23);
+            return move;
+        }
+
+        static public int GetEateanPiece(int move)
+        {
+            return (move >> 23) & 0x1F;
         }
 
         static public int SetOldEnPassant(int move, int enPassant)
@@ -253,7 +270,7 @@ namespace ChessCore.Moves
 
         static public int GetEnPassant(int move)
         {
-            return (move >> 28) & 0xf;
+            return (move >> 28) & 0xF;
         }
 
     }

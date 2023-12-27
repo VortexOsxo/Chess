@@ -11,7 +11,7 @@ namespace ChessCore.FindValidMoves
             this.state = state;
         }
 
-        public List<int> FindAllMoves()
+        public List<int> FindAllMoves(bool bVerifySelfCheck = true)
         {
             int colorToPlay = state.whiteToPlay ? Piece.White : Piece.Black;
 
@@ -22,13 +22,13 @@ namespace ChessCore.FindValidMoves
                 piece = state.board[i];
                 if ((piece & Piece.ColorFilter) == colorToPlay)
                 {
-                    result.AddRange(FindAllMovesFromPosition(i));
+                    result.AddRange(FindAllMovesFromPosition(i, bVerifySelfCheck));
                 }
             }
             return result;
         }
 
-        public List<int> FindAllMovesFromPosition(int position)
+        public List<int> FindAllMovesFromPosition(int position, bool bVerifySelfCheck = true)
         {
             List<int> newMoves = new List<int>();
 
@@ -47,7 +47,7 @@ namespace ChessCore.FindValidMoves
                     {
                         if ((position + step) / 8 == 0 || (position + step) / 8 == 7)
                         {
-                            newMoves.Add(MoveHelper.CreateMove(position, position + step, MoveHelper.Promotion, Piece.Queen));
+                            newMoves.Add(MoveHelper.CreateMove(position, position + step, MoveHelper.Promotion, 3 | (Piece.Queen << 2)));
                         }
 
                         newMoves.Add(MoveHelper.CreateMove(position, position + step, 1));
@@ -174,6 +174,8 @@ namespace ChessCore.FindValidMoves
                     }
                     break;
             }
+
+            if(!bVerifySelfCheck) return newMoves;
 
             List<int> validMoves = new List<int>();
             foreach (int move in newMoves)
