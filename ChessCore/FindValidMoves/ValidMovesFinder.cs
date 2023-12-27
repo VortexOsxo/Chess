@@ -47,7 +47,7 @@ namespace ChessCore.FindValidMoves
                     {
                         if ((position + step) / 8 == 0 || (position + step) / 8 == 7)
                         {
-                            newMoves.Add(MoveHelper.CreateMove(position, position + step, MoveHelper.Promotion, Piece.Queen));
+                            newMoves.Add(MoveHelper.CreateMove(position, position + step, MoveHelper.Promotion, 3 | (Piece.Queen << 2)));
                         }
 
                         newMoves.Add(MoveHelper.CreateMove(position, position + step, 1));

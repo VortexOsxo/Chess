@@ -24,7 +24,7 @@ namespace ChessCore.Moves
         {
             if (!IsPromotion()) return;
             move &= 0xFFFF;
-            move |= type << 16;
+            move |= (3 | (type << 2)) << 16;
         }
 
         public int GetMove()

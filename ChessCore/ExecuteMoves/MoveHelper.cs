@@ -239,9 +239,24 @@ namespace ChessCore.Moves
                     return 1;
                 case 2: // En Passant
                     return (tags >> 2) << 6; // Position = tags >> 2 and then << 6 to give space for castle
+                case 3: // Promotion
+                    return (tags >> 2);
+
                 default:
                     return 0;
             }
+        }
+
+        static public int SetEatenPiece(int move, int eatenPiece) // We should still have enough space to add the color directly in there
+        {
+            //move &= 0xF0FFFFFF;
+            move |= (eatenPiece << 24);
+            return move;
+        }
+
+        static public int GetEateanPiece(int move)
+        {
+            return (move << 24) & 0x0F;
         }
 
         static public int SetOldEnPassant(int move, int enPassant)
