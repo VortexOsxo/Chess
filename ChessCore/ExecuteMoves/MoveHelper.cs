@@ -249,7 +249,7 @@ namespace ChessCore.Moves
             }
         }
 
-        static public int SetEatenPiece(int move, int eatenPiece) // We should still have enough space to add the color directly in there
+        static public int SetEatenPiece(int move, int eatenPiece)
         {
             move &= ~(0x1F << 23);
             move |= (eatenPiece << 23);
