@@ -1,7 +1,7 @@
 ﻿using ChessCore;
 using ChessCore.Moves;
 
-namespace ChessView.ViewState
+namespace ChessView.Views.GameView.ViewState
 {
     internal class Selected : Base
     {
@@ -32,7 +32,7 @@ namespace ChessView.ViewState
             {
                 if (position == move.GetEndPosition())
                 {
-                    if (move.IsPromotion()) 
+                    if (move.IsPromotion())
                     {
                         return new Promotion(move);
                     }

@@ -18,7 +18,7 @@ namespace ChessContext
         private ValidMovesFinder finder;
         private Result result = Result.InProgress;
     
-        public Game(string fenString = null) 
+        public Game(string? fenString = null) 
         {
             state = fenString is null ? new ChessCore.State() : new ChessCore.State(fenString);
             finder = new ValidMovesFinder(state);

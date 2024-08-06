@@ -1,8 +1,7 @@
-﻿using ChessCore;
-using ChessCore.Moves;
+﻿using ChessCore.Moves;
 using SFML.Graphics;
 
-namespace ChessView.ViewState
+namespace ChessView.Views.GameView.ViewState
 {
     internal class Promotion : Base
     {
@@ -23,9 +22,9 @@ namespace ChessView.ViewState
             return new ComputerTurn(promotionMove);
         }
 
-        override public void Draw(RenderWindow window) 
+        override public void Draw(RenderWindow window)
         {
-            mainView.DrawPieceSelection();
+            mainView.DrawPieceSelection(window);
         }
     }
 }

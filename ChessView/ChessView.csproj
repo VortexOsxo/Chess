@@ -8,12 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ViewState\Base.cs~RF992adb7.TMP" />
-    <None Remove="ViewState\Base.cs~RF995e311.TMP" />
-    <None Remove="ViewState\Base.cs~RF9b5b147.TMP" />
-    <None Remove="ViewState\Neutral.cs~RF9940d38.TMP" />
-    <None Remove="ViewState\Promotion.cs~RF30731777.TMP" />
-    <None Remove="ViewState\Selected.cs~RF99cee4a.TMP" />
+    <None Remove="Views\GameView\ViewState\Base.cs~RF992adb7.TMP" />
+    <None Remove="Views\GameView\ViewState\Base.cs~RF995e311.TMP" />
+    <None Remove="Views\GameView\ViewState\Base.cs~RF9b5b147.TMP" />
+    <None Remove="Views\GameView\ViewState\Neutral.cs~RF9940d38.TMP" />
+    <None Remove="Views\GameView\ViewState\Promotion.cs~RF30731777.TMP" />
+    <None Remove="Views\GameView\ViewState\Selected.cs~RF99cee4a.TMP" />
   </ItemGroup>
 
   <ItemGroup>

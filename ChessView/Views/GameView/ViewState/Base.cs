@@ -1,7 +1,8 @@
 ﻿using ChessContext;
+using ChessView.Views.GameView;
 using SFML.Graphics;
 
-namespace ChessView.ViewState
+namespace ChessView.Views.GameView.ViewState
 {
     abstract internal class Base
     {
@@ -10,7 +11,7 @@ namespace ChessView.ViewState
 
         public static bool[] highlighted;
 
-        public Base() 
+        public Base()
         {
         }
 

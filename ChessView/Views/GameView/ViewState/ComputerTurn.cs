@@ -1,7 +1,7 @@
 ﻿
 using ChessCore.Moves;
 
-namespace ChessView.ViewState
+namespace ChessView.Views.GameView.ViewState
 {
     internal class ComputerTurn : Base
     {
