@@ -1,5 +1,4 @@
-﻿
-namespace ChessCore
+﻿namespace ChessCore.GameContext
 {
     public class State
     {
@@ -26,19 +25,19 @@ namespace ChessCore
             CreateStateFromFenString(fenString);
         }
 
-        public void AddFlags(int flags) 
+        public void AddFlags(int flags)
         {
             this.flags |= flags;
         }
 
-        public void RemoveFlags(int flags) 
+        public void RemoveFlags(int flags)
         {
             this.flags &= ~flags;
         }
 
         public int GetFlags()
         {
-            return this.flags;
+            return flags;
         }
 
         private void CreateStateFromFenString(string fenString)
@@ -49,7 +48,7 @@ namespace ChessCore
             string[] rows = fenParts[0].Split('/');
 
             int index = 0;
-            foreach (string row in rows) 
+            foreach (string row in rows)
             {
                 foreach (char c in row)
                 {

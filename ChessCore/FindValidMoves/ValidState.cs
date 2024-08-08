@@ -1,4 +1,6 @@
 ﻿
+using ChessCore.GameContext;
+
 namespace ChessCore.FindValidMoves
 {
     public class ValidState

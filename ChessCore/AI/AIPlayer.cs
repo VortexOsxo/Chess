@@ -1,24 +1,32 @@
-﻿using ChessAI.Evaluation;
-using ChessAI.Search;
-
-using ChessCore;
+﻿using ChessCore.AI.Evaluation;
+using ChessCore.AI.Search;
 using ChessCore.FindValidMoves;
+using ChessCore.GameContext;
 using ChessCore.Moves;
 
-namespace ChessAI
+namespace ChessCore.AI
 {
     public class AIPlayer : Player
     {
+        private Game game;
+
+        public override void OnGameStarted(Game game)
+        {
+            this.game = game;
+        }
+
         public override void OnPlayerTurn()
         {
-            
+            int bestMove = GetBestMove(game.GetState());
+
+        
         }
 
         static public int GetBestMove(State state)
         {
             return GetBestMoveScore(state).move;
         }
-    
+
         static private MoveScore GetBestMoveScore(State state, int alpha = int.MinValue, int beta = int.MaxValue, int depth = 5)
         {
             List<int> moves = new ValidMovesFinder(state).FindAllMoves();
@@ -35,7 +43,8 @@ namespace ChessAI
                 if (depth == 1)
                 {
                     score = Evaluator.EvaluatePosition(state);
-                } else
+                }
+                else
                 {
                     score = GetBestMoveScore(state, alpha, beta, depth - 1).score;
                 }
@@ -50,7 +59,9 @@ namespace ChessAI
                     }
                     alpha = Math.Max(alpha, score);
 
-                } else {
+                }
+                else
+                {
                     if (score < bestScore)
                     {
                         bestScore = score;

@@ -1,5 +1,6 @@
 ﻿
 using ChessCore.FindValidMoves;
+using ChessCore.GameContext;
 
 namespace ChessCore.Moves
 {

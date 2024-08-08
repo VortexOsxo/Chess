@@ -1,10 +1,8 @@
-﻿using ChessCore;
-using ChessCore.AI;
+﻿using ChessCore.AI;
 using ChessCore.FindValidMoves;
-using ChessCore.Game;
 using ChessCore.Moves;
 
-namespace ChessContext
+namespace ChessCore.GameContext
 {
     public class Game
     {
@@ -33,13 +31,18 @@ namespace ChessContext
             return state.whiteToPlay == true ? Piece.White : Piece.Black;
         }
 
+        public State GetState()
+        {
+            return state;
+        }
+
         public List<Move> GetValidMoveFrom(int position)
         {
             List<int> moves = finder.FindAllMovesFromPosition(position);
             List<Move> movesObject = new List<Move>();
             foreach (int move in moves) 
             {
-                movesObject.Add( new Move(move));
+                movesObject.Add( new Move(move) );
             }
             return movesObject;
         }

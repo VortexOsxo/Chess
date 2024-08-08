@@ -1,10 +1,9 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-
 using ChessCore;
-using ChessContext;
 using ChessView.Views.GameView.ViewState;
+using ChessCore.GameContext;
 
 namespace ChessView.Views.GameView
 {
@@ -149,19 +148,19 @@ namespace ChessView.Views.GameView
 
         private void DrawGameResult(RenderWindow window)
         {
-            Game.Result result = game.GetGameResult();
+            Result result = game.GetGameResult();
             switch (result)
             {
-                case Game.Result.InProgress:
+                case Result.InProgress:
                     text = new Text("Game State: In Progress", Config.Font);
                     break;
-                case Game.Result.BlackWin:
+                case Result.BlackWin:
                     text = new Text("Game State: Black Win", Config.Font);
                     break;
-                case Game.Result.WhiteWin:
+                case Result.WhiteWin:
                     text = new Text("Game State: White Win", Config.Font);
                     break;
-                case Game.Result.Draw:
+                case Result.Draw:
                     text = new Text("Game State: Draw", Config.Font);
                     break;
             }

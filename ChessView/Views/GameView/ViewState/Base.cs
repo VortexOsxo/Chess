@@ -1,5 +1,4 @@
-﻿using ChessContext;
-using ChessView.Views.GameView;
+﻿using ChessCore.GameContext;
 using SFML.Graphics;
 
 namespace ChessView.Views.GameView.ViewState

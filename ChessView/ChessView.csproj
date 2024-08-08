@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ChessContext\ChessContext.csproj" />
     <ProjectReference Include="..\ChessCore\ChessCore.csproj" />
   </ItemGroup>
 
