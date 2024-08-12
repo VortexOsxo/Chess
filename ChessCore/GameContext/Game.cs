@@ -9,11 +9,20 @@ namespace ChessCore.GameContext
         private State state;
         private ValidMovesFinder finder;
         private Result result = Result.InProgress;
+
+        private Player whitePlayer;
+        private Player blackPlayer;
     
-        public Game(string? fenString = null) 
+        public Game(Player whitePlayer, Player blackPlayer, string? fenString = null) 
         {
             state = fenString is null ? new State() : new State(fenString);
             finder = new ValidMovesFinder(state);
+
+            this.whitePlayer = whitePlayer;
+            this.blackPlayer = blackPlayer;
+
+            whitePlayer.OnGameStarted(this, Piece.White);
+            blackPlayer.OnGameStarted(this, Piece.Black);
         }
 
         public int[] GetBoard()
@@ -52,12 +61,7 @@ namespace ChessCore.GameContext
             return result;
         }
 
-        public void PlayPlayerMove(Move move)
-        {
-            PlayMove(move.GetMove());
-        }
-
-        private void PlayMove(int move)
+        public void PlayMove(int move)
         {
             MoveHelper.ExecuteMove(state, move);
 
@@ -72,14 +76,11 @@ namespace ChessCore.GameContext
                 {
                     result = state.whiteToPlay ? Result.WhiteWin : Result.BlackWin;
                 }
+            } else
+            {
+                Player player = state.whiteToPlay ? whitePlayer : blackPlayer;
+                player.OnPlayerTurn();
             }
-        }
-
-        public Move PlayComputerMove()
-        {
-            int move = AIPlayer.GetBestMove(state);
-            PlayMove(move);
-            return new Move(move);
         }
     }
 }

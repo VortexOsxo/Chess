@@ -2,7 +2,7 @@
 {
     public abstract class Player
     {
-        public virtual void OnGameStarted(Game game) { }
+        public virtual void OnGameStarted(Game game, int color) { }
         public virtual void OnGameEnded(Result result) { }
 
 

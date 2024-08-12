@@ -10,7 +10,7 @@ namespace ChessCore.AI
     {
         private Game game;
 
-        public override void OnGameStarted(Game game)
+        public override void OnGameStarted(Game game, int color)
         {
             this.game = game;
         }
@@ -19,7 +19,7 @@ namespace ChessCore.AI
         {
             int bestMove = GetBestMove(game.GetState());
 
-        
+            game.PlayMove(bestMove);
         }
 
         static public int GetBestMove(State state)

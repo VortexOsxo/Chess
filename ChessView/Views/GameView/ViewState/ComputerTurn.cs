@@ -15,15 +15,9 @@ namespace ChessView.Views.GameView.ViewState
             }
         }
 
-        override public Base HandleClick(SFML.Window.MouseButtonEventArgs e)
+        override public Base? HandleClick(SFML.Window.MouseButtonEventArgs e)
         {
-            return this;
-        }
-
-        public override Base Update()
-        {
-            Move playedMove = game.PlayComputerMove();
-            return new Neutral(playedMove);
+            return null;
         }
     }
 }

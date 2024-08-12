@@ -6,24 +6,20 @@ namespace ChessView.Views.GameView.ViewState
     abstract internal class Base
     {
         static protected MainView mainView;
-        static protected Game game;
+        static protected UserPlayer user;
 
         public static bool[] highlighted;
 
-        public Base()
-        {
-        }
-
-        static public void SetUp(MainView mainViewIn, Game gameIn)
+        static public void SetUp(MainView mainViewIn, UserPlayer userIn)
         {
             mainView = mainViewIn;
-            game = gameIn;
+            user = userIn;
         }
 
-        abstract public Base HandleClick(SFML.Window.MouseButtonEventArgs e);
+        abstract public Base? HandleClick(SFML.Window.MouseButtonEventArgs e);
 
         virtual public void Draw(RenderWindow window) { }
 
-        virtual public Base Update() { return this; }
+        virtual public Base? Update() { return null; }
     }
 }

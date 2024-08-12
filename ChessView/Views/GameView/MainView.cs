@@ -26,7 +26,7 @@ namespace ChessView.Views.GameView
 
 
         // View State Variables
-        private Game game;
+        private UserPlayer player;
         private Base state;
 
         public MainView()
@@ -41,9 +41,13 @@ namespace ChessView.Views.GameView
 
             SetUpPiecesSprite();
 
-            game = new Game();
+            player = GameManager.Instance.CreateSoloGame();
+            player.onPlayerTurnCallback = () => { 
+                state = new Neutral();
+            };
+
             state = new ViewState.Neutral();
-            Base.SetUp(this, game);
+            Base.SetUp(this, player);
         }
 
         public void Draw(RenderWindow window)
@@ -62,14 +66,18 @@ namespace ChessView.Views.GameView
 
         public View? Update()
         {
-            state = state.Update();
+            var newState = state.Update();
+            if (newState != null) SetState(newState);
+
             return null;
         }
 
 
         public View? OnMousePressed(MouseButtonEventArgs e)
         {
-            state = state.HandleClick(e);
+            var newState = state.HandleClick(e);
+            if(newState != null) SetState(newState);
+
             return null;
         }
 
@@ -105,7 +113,7 @@ namespace ChessView.Views.GameView
             {
                 if (startY + i * tileSize < e.Y && startY + (i + 1) * tileSize > e.Y)
                 {
-                    return i | game.GetTeamToPlay();
+                    return i | player.color;
                 }
             }
             return 0;
@@ -123,7 +131,7 @@ namespace ChessView.Views.GameView
 
         private void DrawPieces(RenderWindow window, int col, int row)
         {
-            Sprite? sprite = piecesSprite.GetValueOrDefault(game.GetBoard()[row * 8 + col]);
+            Sprite? sprite = piecesSprite.GetValueOrDefault(player.game.GetBoard()[row * 8 + col]);
             if (sprite == null) return;
 
             sprite.Position = new Vector2f(startX + col * tileSize, startY + row * tileSize);
@@ -138,7 +146,7 @@ namespace ChessView.Views.GameView
                 tile.FillColor = i % 2 == 0 ? Config.LightTilesColor : Config.DarkTilesColor;
                 window.Draw(tile);
 
-                Sprite? sprite = piecesSprite.GetValueOrDefault(i | game.GetTeamToPlay());
+                Sprite? sprite = piecesSprite.GetValueOrDefault(i | player.game.GetTeamToPlay());
                 if (sprite == null) return;
 
                 sprite.Position = tile.Position;
@@ -148,7 +156,7 @@ namespace ChessView.Views.GameView
 
         private void DrawGameResult(RenderWindow window)
         {
-            Result result = game.GetGameResult();
+            Result result = player.game.GetGameResult();
             switch (result)
             {
                 case Result.InProgress:
@@ -165,7 +173,11 @@ namespace ChessView.Views.GameView
                     break;
             }
             window.Draw(text);
+        }
 
+        private void SetState(Base newState)
+        {
+            state = newState;        
         }
     }
 }

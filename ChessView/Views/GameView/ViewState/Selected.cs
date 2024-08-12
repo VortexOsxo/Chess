@@ -14,7 +14,7 @@ namespace ChessView.Views.GameView.ViewState
             highlighted = new bool[64];
             highlighted[selected] = true;
 
-            possibleMoves = game.GetValidMoveFrom(selected);
+            possibleMoves = user.game.GetValidMoveFrom(selected);
 
             foreach (Move move in possibleMoves)
             {
@@ -23,7 +23,7 @@ namespace ChessView.Views.GameView.ViewState
 
         }
 
-        override public Base HandleClick(SFML.Window.MouseButtonEventArgs e)
+        override public Base? HandleClick(SFML.Window.MouseButtonEventArgs e)
         {
             int position = mainView.GetIndexClicked(e);
             if (position < 0 || position > 63) return this;
@@ -36,17 +36,17 @@ namespace ChessView.Views.GameView.ViewState
                     {
                         return new Promotion(move);
                     }
-                    game.PlayPlayerMove(move);
-                    return new ComputerTurn(move);
+                    user.Play(move);
+                    return null; // Was Computer move
                 }
             }
 
-            int piece = game.GetPiece(position);
+            int piece = user.game.GetPiece(position);
             if (piece == 0)
                 return new Neutral();
-            else if ((piece & Piece.ColorFilter) == (game.GetPiece(selected) & Piece.ColorFilter))
+            else if ((piece & Piece.ColorFilter) == (user.game.GetPiece(selected) & Piece.ColorFilter))
                 return new Selected(position);
-            return this;
+            return null;
         }
     }
 }

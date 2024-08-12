@@ -15,14 +15,14 @@ namespace ChessView.Views.GameView.ViewState
             }
         }
 
-        override public Base HandleClick(SFML.Window.MouseButtonEventArgs e)
+        override public Base? HandleClick(SFML.Window.MouseButtonEventArgs e)
         {
             int position = mainView.GetIndexClicked(e);
-            if (position < 0 || position > 63) return this;
+            if (position < 0 || position > 63) return null;
 
-            int piece = game.GetPiece(position);
-            if (piece == 0 || (piece & Piece.ColorFilter) != game.GetTeamToPlay())
-                return this;
+            int piece = user.game.GetPiece(position);
+            if (piece == 0 || (piece & Piece.ColorFilter) != user.color)
+                return null;
             return new Selected(position);
         }
     }

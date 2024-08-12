@@ -12,13 +12,13 @@ namespace ChessView.Views.GameView.ViewState
             highlighted = new bool[64];
         }
 
-        override public Base HandleClick(SFML.Window.MouseButtonEventArgs e)
+        override public Base? HandleClick(SFML.Window.MouseButtonEventArgs e)
         {
             int piece = mainView.GetChosenPiece(e);
             if (piece == 0) return new Neutral();
 
             promotionMove.ChangePromotionType(piece);
-            game.PlayPlayerMove(promotionMove);
+            user.Play(promotionMove);
             return new ComputerTurn(promotionMove);
         }
 
