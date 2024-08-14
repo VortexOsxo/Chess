@@ -8,13 +8,6 @@ namespace ChessCore.AI
 {
     public class AIPlayer : Player
     {
-        private Game game;
-
-        public override void OnGameStarted(Game game, int color)
-        {
-            this.game = game;
-        }
-
         public override void OnPlayerTurn()
         {
             int bestMove = GetBestMove(game.GetState());
