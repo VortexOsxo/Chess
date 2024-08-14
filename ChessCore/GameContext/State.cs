@@ -4,16 +4,16 @@
     {
         public bool whiteToPlay;
 
-        private int flags = 0;
+        public int[] board = new int[64];
 
-        internal const int lRookMove = 1;
-        internal const int kingMove = 2;
-        internal const int rRookMove = 4;
+        private int flags = 0;
 
         public const int canCastleLeft = 3;
         public const int canCastleRight = 6;
 
-        public int[] board = new int[64];
+        internal const int lRookMove = 1;
+        internal const int kingMove = 2;
+        internal const int rRookMove = 4;
 
         public State()
         {
@@ -23,6 +23,14 @@
         public State(string fenString)
         {
             CreateStateFromFenString(fenString);
+        }
+
+        public State(State copiedState)
+        {
+            whiteToPlay = copiedState.whiteToPlay;
+            flags = copiedState.flags;
+
+            Array.Copy(copiedState.board, board, 64);
         }
 
         public void AddFlags(int flags)
@@ -71,7 +79,6 @@
 
             // Part 4
             // TO DO
-
         }
 
         private int GetPieceFromFenChar(char fenChar)
