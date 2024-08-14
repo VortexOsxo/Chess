@@ -5,14 +5,18 @@ namespace ChessCore.FindValidMoves
 {
     public class ValidMovesFinder
     {
-        private State state;
-
-        public ValidMovesFinder(State state)
+        static public List<Move> GetValidMoveFrom(State state, int position)
         {
-            this.state = state;
+            List<int> moves = FindAllMovesFromPosition(state, position);
+            List<Move> movesObject = new List<Move>();
+            foreach (int move in moves)
+            {
+                movesObject.Add(new Move(move));
+            }
+            return movesObject;
         }
 
-        public List<int> FindAllMoves(bool bVerifySelfCheck = true)
+        static public List<int> FindAllMoves(State state, bool bVerifySelfCheck = true)
         {
             int colorToPlay = state.whiteToPlay ? Piece.White : Piece.Black;
 
@@ -23,13 +27,13 @@ namespace ChessCore.FindValidMoves
                 piece = state.board[i];
                 if ((piece & Piece.ColorFilter) == colorToPlay)
                 {
-                    result.AddRange(FindAllMovesFromPosition(i, bVerifySelfCheck));
+                    result.AddRange(FindAllMovesFromPosition(state, i, bVerifySelfCheck));
                 }
             }
             return result;
         }
 
-        public List<int> FindAllMovesFromPosition(int position, bool bVerifySelfCheck = true)
+        static public List<int> FindAllMovesFromPosition(State state, int position, bool bVerifySelfCheck = true)
         {
             List<int> newMoves = new List<int>();
 
@@ -86,11 +90,11 @@ namespace ChessCore.FindValidMoves
                     break;
 
                 case Piece.Knight:
-                    newMoves = FindAllStepMovesFromPosition(knightSteps, position);
+                    newMoves = FindAllStepMovesFromPosition(state, knightSteps, position);
                     break;
 
                 case Piece.Bishop:
-                    newMoves = FindAllSlideMovesFromPosition(bishopSlides, position);
+                    newMoves = FindAllSlideMovesFromPosition(state, bishopSlides, position);
                     break;
 
                 case Piece.Rook:
@@ -107,11 +111,11 @@ namespace ChessCore.FindValidMoves
                     }
                     else tags = 0; // No need to have a tag
 
-                    newMoves = FindAllSlideMovesFromPosition(rookSlides, position, tags);
+                    newMoves = FindAllSlideMovesFromPosition(state, rookSlides, position, tags);
                     break;
 
                 case Piece.Queen:
-                    newMoves = FindAllSlideMovesFromPosition(queenSlides, position);
+                    newMoves = FindAllSlideMovesFromPosition(state, queenSlides, position);
                     break;
 
                 case Piece.King:
@@ -126,7 +130,7 @@ namespace ChessCore.FindValidMoves
                     }
                     else tags = 0;
 
-                    newMoves = FindAllStepMovesFromPosition(kingStep, position, tags);
+                    newMoves = FindAllStepMovesFromPosition(state, kingStep, position, tags);
 
                     //  Castles            
                     if (color == Piece.White)
@@ -187,7 +191,7 @@ namespace ChessCore.FindValidMoves
             return validMoves;
         }
 
-        private List<int> FindAllStepMovesFromPosition(int[] steps, int position, int tags = 0)
+        static private List<int> FindAllStepMovesFromPosition(State state, int[] steps, int position, int tags = 0)
         {
             List<int> moves = new List<int>();
             int color = state.board[position] & Piece.ColorFilter;
@@ -208,7 +212,7 @@ namespace ChessCore.FindValidMoves
             return moves;
         }
 
-        private List<int> FindAllSlideMovesFromPosition(int[] slides, int position, int tags = 0)
+        static private List<int> FindAllSlideMovesFromPosition(State state, int[] slides, int position, int tags = 0)
         {
             List<int> moves = new List<int>();
             int color = state.board[position] & Piece.ColorFilter;
