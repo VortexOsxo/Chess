@@ -1,5 +1,6 @@
 ﻿using ChessCore;
 using ChessCore.Moves;
+using ChessCore.FindValidMoves;
 
 namespace ChessView.Views.GameView.ViewState
 {
@@ -7,6 +8,7 @@ namespace ChessView.Views.GameView.ViewState
     {
         private int selected;
         private List<Move> possibleMoves;
+
         public Selected(int selected)
         {
             this.selected = selected;
@@ -14,13 +16,12 @@ namespace ChessView.Views.GameView.ViewState
             highlighted = new bool[64];
             highlighted[selected] = true;
 
-            possibleMoves = user.game.GetValidMoveFrom(selected);
+            possibleMoves = ValidMovesFinder.GetValidMoveFrom(user.state, selected);
 
             foreach (Move move in possibleMoves)
             {
                 highlighted[move.GetEndPosition()] = true;
             }
-
         }
 
         override public Base? HandleClick(SFML.Window.MouseButtonEventArgs e)
@@ -41,10 +42,10 @@ namespace ChessView.Views.GameView.ViewState
                 }
             }
 
-            int piece = user.game.GetPiece(position);
+            int piece = user.state.board[position];
             if (piece == 0)
                 return new Neutral();
-            else if ((piece & Piece.ColorFilter) == (user.game.GetPiece(selected) & Piece.ColorFilter))
+            else if ((piece & Piece.ColorFilter) == (user.state.board[selected] & Piece.ColorFilter))
                 return new Selected(position);
             return null;
         }

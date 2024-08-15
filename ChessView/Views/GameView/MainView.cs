@@ -61,7 +61,7 @@ namespace ChessView.Views.GameView
                 }
             }
             state.Draw(window);
-            DrawGameResult(window);
+            //DrawGameResult(window);
         }
 
         public View? Update()
@@ -131,7 +131,7 @@ namespace ChessView.Views.GameView
 
         private void DrawPieces(RenderWindow window, int col, int row)
         {
-            Sprite? sprite = piecesSprite.GetValueOrDefault(player.game.GetBoard()[row * 8 + col]);
+            Sprite? sprite = piecesSprite.GetValueOrDefault(player.state.board[row * 8 + col]);
             if (sprite == null) return;
 
             sprite.Position = new Vector2f(startX + col * tileSize, startY + row * tileSize);
@@ -146,33 +146,12 @@ namespace ChessView.Views.GameView
                 tile.FillColor = i % 2 == 0 ? Config.LightTilesColor : Config.DarkTilesColor;
                 window.Draw(tile);
 
-                Sprite? sprite = piecesSprite.GetValueOrDefault(i | player.game.GetTeamToPlay());
+                Sprite? sprite = piecesSprite.GetValueOrDefault(i | (player.state.whiteToPlay ? Piece.White : Piece.Black));
                 if (sprite == null) return;
 
                 sprite.Position = tile.Position;
                 window.Draw(sprite);
             }
-        }
-
-        private void DrawGameResult(RenderWindow window)
-        {
-            Result result = player.game.GetGameResult();
-            switch (result)
-            {
-                case Result.InProgress:
-                    text = new Text("Game State: In Progress", Config.Font);
-                    break;
-                case Result.BlackWin:
-                    text = new Text("Game State: Black Win", Config.Font);
-                    break;
-                case Result.WhiteWin:
-                    text = new Text("Game State: White Win", Config.Font);
-                    break;
-                case Result.Draw:
-                    text = new Text("Game State: Draw", Config.Font);
-                    break;
-            }
-            window.Draw(text);
         }
 
         private void SetState(Base newState)

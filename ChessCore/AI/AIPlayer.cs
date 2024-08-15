@@ -22,7 +22,7 @@ namespace ChessCore.AI
 
         static private MoveScore GetBestMoveScore(State state, int alpha = int.MinValue, int beta = int.MaxValue, int depth = 5)
         {
-            List<int> moves = new ValidMovesFinder(state).FindAllMoves();
+            List<int> moves = ValidMovesFinder.FindAllMoves(state);
             moves = MoveOrder.OrderMoves(state, moves);
 
             int bestMove = 0;

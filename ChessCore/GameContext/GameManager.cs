@@ -5,10 +5,10 @@ namespace ChessCore.GameContext
     public class GameManager
     {
         private static readonly GameManager instance = new GameManager();
-
         static public GameManager Instance { get { return instance; } }
 
-        private List<Game> games = new List<Game>();
+
+        private Dictionary<int, Game> games = new ();
 
         private GameManager() { }
 
@@ -18,9 +18,14 @@ namespace ChessCore.GameContext
             var aiPlayer = new AIPlayer();
 
             var game = new Game(userPlayer, aiPlayer);
-            games.Add(game);
+            games.Add(0, game);
 
             return userPlayer;
+        }
+
+        public Game? GetGame(int gameNumber)
+        {
+            return games[gameNumber];
         }
 
     }
