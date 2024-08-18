@@ -6,11 +6,11 @@ namespace ChessView.Views.GameView.ViewState
     abstract internal class Base
     {
         static protected MainView mainView;
-        static protected UserPlayer user;
+        static protected ClientPlayer user;
 
         public static bool[] highlighted;
 
-        static public void SetUp(MainView mainViewIn, UserPlayer userIn)
+        static public void SetUp(MainView mainViewIn, ClientPlayer userIn)
         {
             mainView = mainViewIn;
             user = userIn;

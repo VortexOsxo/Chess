@@ -5,7 +5,7 @@ namespace ChessView.Views.GameView.ViewState
 {
     internal class ComputerTurn : Base
     {
-        public ComputerTurn(Move? lastMove)
+        public ComputerTurn(Move? lastMove = null)
         {
             highlighted = new bool[64];
             if (lastMove != null)

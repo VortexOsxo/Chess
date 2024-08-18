@@ -38,7 +38,7 @@ namespace ChessView.Views.GameView.ViewState
                         return new Promotion(move);
                     }
                     user.Play(move);
-                    return null; // Was Computer move
+                    return new ComputerTurn();
                 }
             }
 

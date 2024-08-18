@@ -15,7 +15,7 @@ class Program
         window.Closed += (sender, e) => window.Close();
         window.MouseButtonPressed += OnMousePressed;
 
-         view = new ChessView.Views.HomeView();
+        view = new ChessView.Views.HomeView();
 
         while (window.IsOpen)
         {

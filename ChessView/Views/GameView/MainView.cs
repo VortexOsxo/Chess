@@ -3,7 +3,6 @@ using SFML.System;
 using SFML.Window;
 using ChessCore;
 using ChessView.Views.GameView.ViewState;
-using ChessCore.GameContext;
 
 namespace ChessView.Views.GameView
 {
@@ -26,7 +25,7 @@ namespace ChessView.Views.GameView
 
 
         // View State Variables
-        private UserPlayer player;
+        private ClientPlayer player;
         private Base state;
 
         public MainView()
@@ -41,13 +40,15 @@ namespace ChessView.Views.GameView
 
             SetUpPiecesSprite();
 
-            player = GameManager.Instance.CreateSoloGame();
-            player.onPlayerTurnCallback = () => { 
-                state = new Neutral();
-            };
+            player  = new ClientPlayer(this);
 
-            state = new ViewState.Neutral();
+            state = new Neutral();
             Base.SetUp(this, player);
+        }
+
+        public void SetState(Base newState)
+        {
+            state = newState;
         }
 
         public void Draw(RenderWindow window)
@@ -152,11 +153,6 @@ namespace ChessView.Views.GameView
                 sprite.Position = tile.Position;
                 window.Draw(sprite);
             }
-        }
-
-        private void SetState(Base newState)
-        {
-            state = newState;        
         }
     }
 }
