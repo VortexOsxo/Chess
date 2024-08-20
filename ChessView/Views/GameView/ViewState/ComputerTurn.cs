@@ -10,8 +10,8 @@ namespace ChessView.Views.GameView.ViewState
             highlighted = new bool[64];
             if (lastMove != null)
             {
-                highlighted[lastMove.GetStartPosition()] = true;
-                highlighted[lastMove.GetEndPosition()] = true;
+                highlighted[GetDrawPosition(lastMove.GetStartPosition())] = true;
+                highlighted[GetDrawPosition(lastMove.GetEndPosition())] = true;
             }
         }
 

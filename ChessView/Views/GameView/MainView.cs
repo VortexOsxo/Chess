@@ -42,7 +42,7 @@ namespace ChessView.Views.GameView
 
             player  = new ClientPlayer(this);
 
-            state = new Neutral();
+            state = new ComputerTurn();
             Base.SetUp(this, player);
         }
 
@@ -58,11 +58,17 @@ namespace ChessView.Views.GameView
                 for (int col = 0; col < 8; col++)
                 {
                     DrawBoard(window, row, col);
-                    DrawPieces(window, row, col);
+                    if (player.color == Piece.White)
+                    {
+                        DrawPieces(window, row, col);
+                    }
+                    else
+                    {
+                        DrawPiecesReversed(window, row, col);
+                    }
                 }
             }
             state.Draw(window);
-            //DrawGameResult(window);
         }
 
         public View? Update()
@@ -132,10 +138,19 @@ namespace ChessView.Views.GameView
 
         private void DrawPieces(RenderWindow window, int col, int row)
         {
-            Sprite? sprite = piecesSprite.GetValueOrDefault(player.state.board[row * 8 + col]);
+            Sprite? sprite = piecesSprite.GetValueOrDefault(player.state.board[row* 8 + col]);
             if (sprite == null) return;
 
             sprite.Position = new Vector2f(startX + col * tileSize, startY + row * tileSize);
+            window.Draw(sprite);
+        }
+
+        private void DrawPiecesReversed(RenderWindow window, int col, int row)
+        {
+            Sprite? sprite = piecesSprite.GetValueOrDefault(player.state.board[(7 - row) * 8 + (7 - col)]);
+            if (sprite == null) return;
+
+            sprite.Position = new Vector2f(startX + (col) * tileSize, startY + (row) * tileSize);
             window.Draw(sprite);
         }
 

@@ -8,12 +8,5 @@ namespace ChessCore.GameContext
         static public GameManager Instance { get { return instance; } }
 
         private GameManager() { }
-
-        public void CreateSoloGame(UserPlayer userPlayer)
-        {
-            var aiPlayer = new AIPlayer();
-
-            new Game(userPlayer, aiPlayer);
-        }
     }
 }

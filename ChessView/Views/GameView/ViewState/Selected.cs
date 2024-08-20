@@ -14,20 +14,20 @@ namespace ChessView.Views.GameView.ViewState
             this.selected = selected;
 
             highlighted = new bool[64];
-            highlighted[selected] = true;
+            highlighted[GetDrawPosition(selected)] = true;
 
             possibleMoves = ValidMovesFinder.GetValidMoveFrom(user.state, selected);
 
             foreach (Move move in possibleMoves)
             {
-                highlighted[move.GetEndPosition()] = true;
+                highlighted[GetDrawPosition(move.GetEndPosition())] = true;
             }
         }
 
         override public Base? HandleClick(SFML.Window.MouseButtonEventArgs e)
         {
-            int position = mainView.GetIndexClicked(e);
-            if (position < 0 || position > 63) return this;
+            int position = GetDrawPosition(mainView.GetIndexClicked(e));
+            if (!IsPositionValid(position)) return this;
 
             foreach (Move move in possibleMoves)
             {

@@ -32,9 +32,11 @@ namespace ChessCore.GameContext
             {
                 if (data[1] == 0)
                 {
-                    new Game(this, new AIPlayer());
+                    var game = new Game(this, new AIPlayer());
 
-                    handler.SendMessage([1, 1, Piece.White]);
+                    handler.SendMessage([1, 1, (byte)color]);
+
+                    game.Start();
                 }
             }
             // In Game Action

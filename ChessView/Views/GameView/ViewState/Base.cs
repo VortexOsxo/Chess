@@ -1,4 +1,5 @@
-﻿using ChessCore.GameContext;
+﻿using ChessCore;
+using ChessCore.GameContext;
 using SFML.Graphics;
 
 namespace ChessView.Views.GameView.ViewState
@@ -21,5 +22,15 @@ namespace ChessView.Views.GameView.ViewState
         virtual public void Draw(RenderWindow window) { }
 
         virtual public Base? Update() { return null; }
+
+        protected bool IsPositionValid(int position)
+        {
+            return position > 0 && position < 64;
+        }
+
+        protected int GetDrawPosition(int position)
+        {
+            return user.color == Piece.White ? position : 63 - position;
+        }
     }
 }

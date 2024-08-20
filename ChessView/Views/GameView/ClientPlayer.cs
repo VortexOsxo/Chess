@@ -36,6 +36,7 @@ namespace ChessView.Views.GameView
                 {
                     state = new State();
                     color = data[2];
+                    mainView.SetState(new Neutral());
                 }
             }
             // In Game Action

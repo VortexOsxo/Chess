@@ -10,20 +10,20 @@ namespace ChessView.Views.GameView.ViewState
             highlighted = new bool[64];
             if (lastMove != null)
             {
-                highlighted[lastMove.GetStartPosition()] = true;
-                highlighted[lastMove.GetEndPosition()] = true;
+                highlighted[GetDrawPosition(lastMove.GetStartPosition())] = true;
+                highlighted[GetDrawPosition(lastMove.GetEndPosition())] = true;
             }
         }
 
         override public Base? HandleClick(SFML.Window.MouseButtonEventArgs e)
         {
             int position = mainView.GetIndexClicked(e);
-            if (position < 0 || position > 63) return null;
+            if (!IsPositionValid(position)) return null;
 
-            int piece = user.state.board[position];
+            int piece = user.state.board[GetDrawPosition(position)];
             if (piece == 0 || (piece & Piece.ColorFilter) != user.color)
                 return null;
-            return new Selected(position);
+            return new Selected(GetDrawPosition(position));
         }
     }
 }

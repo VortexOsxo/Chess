@@ -1,5 +1,4 @@
-﻿using ChessCore.AI;
-using ChessCore.FindValidMoves;
+﻿using ChessCore.FindValidMoves;
 using ChessCore.Moves;
 
 namespace ChessCore.GameContext
@@ -22,6 +21,11 @@ namespace ChessCore.GameContext
 
             whitePlayer.OnGameStarted(this, Piece.White, 0);
             blackPlayer.OnGameStarted(this, Piece.Black, 0);
+        }
+
+        public void Start()
+        {
+            whitePlayer.OnPlayerTurn();
         }
 
         public State GetState()
