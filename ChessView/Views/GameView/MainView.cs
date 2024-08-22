@@ -26,11 +26,10 @@ namespace ChessView.Views.GameView
 
         // View State Variables
         private ClientPlayer player;
-        private Base state;
+        private BaseViewState state;
 
         public MainView()
         {
-
             startX = (Config.WindowWidth - tileSize * 8) / 2;
             startY = (Config.WindowHeight - tileSize * 8) / 2;
 
@@ -42,11 +41,10 @@ namespace ChessView.Views.GameView
 
             player  = new ClientPlayer(this);
 
-            state = new ComputerTurn();
-            Base.SetUp(this, player);
+            SetState(new ComputerTurn(this, player));
         }
 
-        public void SetState(Base newState)
+        public void SetState(BaseViewState newState)
         {
             state = newState;
         }
@@ -130,8 +128,8 @@ namespace ChessView.Views.GameView
         {
             tile.Position = new Vector2f(startX + col * tileSize, startY + row * tileSize);
             tile.FillColor = (row + col) % 2 == 0
-                ? Base.highlighted[row * 8 + col] ? Config.LightTilesHighlightedColor : Config.LightTilesColor
-                : Base.highlighted[row * 8 + col] ? Config.DarkTilesHighlightedColor : Config.DarkTilesColor;
+                ? BaseViewState.highlighted[row * 8 + col] ? Config.LightTilesHighlightedColor : Config.LightTilesColor
+                : BaseViewState.highlighted[row * 8 + col] ? Config.DarkTilesHighlightedColor : Config.DarkTilesColor;
 
             window.Draw(tile);
         }

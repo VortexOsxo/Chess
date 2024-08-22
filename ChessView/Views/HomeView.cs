@@ -2,6 +2,7 @@
 using SFML.Graphics;
 using SFML.System;
 using ChessView.Views.GameView;
+using ChessView.Widgets;
 
 namespace ChessView.Views
 {
@@ -9,9 +10,9 @@ namespace ChessView.Views
     {
         Text homeText;
 
-        HomeButton singleplayerButton;
-        HomeButton multiplayerButton;
-        HomeButton passPlayButton;
+        Button singleplayerButton;
+        Button multiplayerButton;
+        Button passPlayButton;
 
 
         public HomeView()
@@ -22,9 +23,9 @@ namespace ChessView.Views
 
             int buttonLeft = (Config.WindowWidth - Config.ButtonWidth) / 2;
 
-            singleplayerButton = new HomeButton(new Vector2f(buttonLeft, 300), new Text("SinglePlayer", Config.Font));
-            multiplayerButton = new HomeButton(new Vector2f(buttonLeft, 400), new Text("MultiPlayer", Config.Font));
-            passPlayButton = new HomeButton(new Vector2f(buttonLeft, 500), new Text("Pass and Play", Config.Font));
+            singleplayerButton = new Button(new Vector2f(buttonLeft, 300), new Text("SinglePlayer", Config.Font));
+            multiplayerButton = new Button(new Vector2f(buttonLeft, 400), new Text("MultiPlayer", Config.Font));
+            passPlayButton = new Button(new Vector2f(buttonLeft, 500), new Text("Pass and Play", Config.Font));
         }
 
         public void Draw(RenderWindow window)
@@ -40,6 +41,9 @@ namespace ChessView.Views
             if (singleplayerButton.Collide(e.X, e.Y))
             {
                 return new MainView();
+            } else if (multiplayerButton.Collide(e.X, e.Y))
+            {
+                return new InQueueView();
             }
             return null;
         }
@@ -47,35 +51,6 @@ namespace ChessView.Views
         public View? Update()
         {
             return null;
-        }
-
-
-
-        private class HomeButton : Drawable
-        {
-            public Text text;
-            public RectangleShape shape;
-
-            public HomeButton(Vector2f position, Text textInput)
-            {
-                shape = new RectangleShape(new Vector2f(200f, 50f));
-                shape.FillColor = Config.DarkTilesColor;
-                shape.Position = position;
-
-                text = textInput;
-                text.Position = position;
-            }
-
-            public void Draw(RenderTarget target, RenderStates states)
-            {
-                target.Draw(shape, states);
-                target.Draw(text, states);
-            }
-
-            public bool Collide(int x, int y)
-            {
-                return shape.GetGlobalBounds().Contains(x, y);
-            }
         }
     }
 }

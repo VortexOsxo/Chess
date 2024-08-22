@@ -3,9 +3,9 @@ using ChessCore.Moves;
 
 namespace ChessView.Views.GameView.ViewState
 {
-    internal class ComputerTurn : Base
+    internal class ComputerTurn : BaseViewState
     {
-        public ComputerTurn(Move? lastMove = null)
+        public ComputerTurn(MainView mainViewIn, ClientPlayer userIn, Move? lastMove = null) : base(mainViewIn, userIn)
         {
             highlighted = new bool[64];
             if (lastMove != null)
@@ -15,7 +15,7 @@ namespace ChessView.Views.GameView.ViewState
             }
         }
 
-        override public Base? HandleClick(SFML.Window.MouseButtonEventArgs e)
+        override public BaseViewState? HandleClick(SFML.Window.MouseButtonEventArgs e)
         {
             return null;
         }

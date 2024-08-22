@@ -4,12 +4,12 @@ using ChessCore.FindValidMoves;
 
 namespace ChessView.Views.GameView.ViewState
 {
-    internal class Selected : Base
+    internal class Selected : BaseViewState
     {
         private int selected;
         private List<Move> possibleMoves;
 
-        public Selected(int selected)
+        public Selected(MainView mainViewIn, ClientPlayer userIn, int selected) : base(mainViewIn, userIn) 
         {
             this.selected = selected;
 
@@ -24,7 +24,7 @@ namespace ChessView.Views.GameView.ViewState
             }
         }
 
-        override public Base? HandleClick(SFML.Window.MouseButtonEventArgs e)
+        override public BaseViewState? HandleClick(SFML.Window.MouseButtonEventArgs e)
         {
             int position = GetDrawPosition(mainView.GetIndexClicked(e));
             if (!IsPositionValid(position)) return this;
@@ -35,18 +35,18 @@ namespace ChessView.Views.GameView.ViewState
                 {
                     if (move.IsPromotion())
                     {
-                        return new Promotion(move);
+                        return new Promotion(mainView, user, move);
                     }
                     user.Play(move);
-                    return new ComputerTurn();
+                    return new ComputerTurn(mainView, user);
                 }
             }
 
             int piece = user.state.board[position];
             if (piece == 0)
-                return new Neutral();
+                return new Neutral(mainView, user);
             else if ((piece & Piece.ColorFilter) == (user.state.board[selected] & Piece.ColorFilter))
-                return new Selected(position);
+                return new Selected(mainView, user,position);
             return null;
         }
     }

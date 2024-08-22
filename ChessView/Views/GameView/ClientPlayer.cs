@@ -2,7 +2,6 @@
 using ChessCore.GameContext;
 using ChessCore.Moves;
 using ChessView.Views.GameView.ViewState;
-using System.Net.Sockets;
 
 namespace ChessView.Views.GameView
 {
@@ -18,7 +17,7 @@ namespace ChessView.Views.GameView
         {
             mainView = mainViewIn;
 
-            client = new SocketHandler(new TcpClient("127.0.0.1", 13000));
+            client = ClientSocketHandler.Instance;
             client.onMessageReceived = OnMessageReceived;
 
             client.SendMessage(Encoder.JoinGame);
@@ -36,7 +35,7 @@ namespace ChessView.Views.GameView
                 {
                     state = new State();
                     color = data[2];
-                    mainView.SetState(new Neutral());
+                    mainView.SetState(new Neutral(mainView, this));
                 }
             }
             // In Game Action
@@ -47,7 +46,7 @@ namespace ChessView.Views.GameView
                 {
                     int move = Encoder.DecodeMove(data);
                     MoveHelper.ExecuteMove(state, move);
-                    mainView.SetState(new Neutral(new Move(move)));
+                    mainView.SetState(new Neutral(mainView, this, new Move(move)));
                 }
             }
         }

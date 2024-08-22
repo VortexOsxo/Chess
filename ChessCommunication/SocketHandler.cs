@@ -12,7 +12,7 @@ namespace ChessCommunication
 
         public SocketHandler(TcpClient clientIn)
         {
-            client = clientIn; //new TcpClient("127.0.0.1", 13000);
+            client = clientIn;
             stream = client.GetStream();
 
             receiveThread = new Thread(() => ReceiveMessages(stream));
