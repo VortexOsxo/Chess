@@ -45,6 +45,12 @@ namespace ChessCore.GameContext
                 instance.JoinGameQueue(this);
             }
 
+            else if (code == (int)Messages.LeaveQueue)
+            {
+                var instance = GameManager.Instance;
+                instance.LeaveGameQueue(this);
+            }
+
             else if (code == (int) Messages.PlayMove)
             {
                 game.PlayMove(value);

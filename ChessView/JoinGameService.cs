@@ -16,14 +16,14 @@ namespace ChessView
         {
             var instance = ClientSocketHandler.Instance;
             instance.SendMessage((int)joinGameMessage);
-            instance.onMessageReceived += (int code, int value) =>
-            {
-                if (code == (int)Messages.OnGameJoined)
-                {
-                    bJoinedGame = true;
-                    color = value;
-                }
-            };
+            instance.onMessageReceived += MessageCallback;
+        }
+
+        public void LeaveGameQueue()
+        {
+            var instance = ClientSocketHandler.Instance;
+            instance.SendMessage((int)Messages.LeaveQueue);
+            instance.onMessageReceived -= MessageCallback;
         }
 
         public View? CanJoinGame()
@@ -33,6 +33,15 @@ namespace ChessView
                 return new MainView(color);
             }
             return null;
+        }
+
+        private void MessageCallback(int code, int value)
+        {
+            if (code == (int)Messages.OnGameJoined)
+            {
+                bJoinedGame = true;
+                color = value;
+            }
         }
 
     }

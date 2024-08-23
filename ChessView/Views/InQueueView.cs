@@ -33,6 +33,7 @@ namespace ChessView.Views
         {
             if (leaveQueueButton.Collide(e.X, e.Y))
             {
+                JoinGameService.Instance.LeaveGameQueue();
                 return new HomeView();
             }
             return null;

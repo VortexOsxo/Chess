@@ -27,5 +27,13 @@ namespace ChessCore.GameContext
             new Game(player, inQueue).Start();
             inQueue = null;
         }
+
+        public void LeaveGameQueue(UserPlayer player)
+        {
+            if (inQueue == player)
+            {
+                inQueue = null;
+            }
+        }
     }
 }

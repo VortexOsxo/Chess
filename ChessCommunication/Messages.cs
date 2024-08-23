@@ -4,6 +4,7 @@
     {
         JoinSinglePlayerGame,
         JoinMultiPlayerGame,
+        LeaveQueue,
         OnGameJoined,
 
         PlayMove,
