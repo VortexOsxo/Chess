@@ -8,7 +8,7 @@
         OnGameJoined,
 
         PlayMove,
-        OnMovePlayed,
-
+        OnSelfMovePlayed,
+        OnEnemyMovePlayed,
     }
 }

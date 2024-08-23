@@ -26,7 +26,15 @@ namespace ChessView.Views.GameView
 
         public void OnMessageReceived(int code, int value)
         {
-            if (code == (int) Messages.OnMovePlayed)
+            if (code == (int) Messages.OnSelfMovePlayed)
+            {
+                int move = value;
+                MoveHelper.ExecuteMove(state, move);
+
+                mainView.SetState(new ComputerTurn(mainView, this, new Move(move)));
+            }
+
+            else if (code == (int)Messages.OnEnemyMovePlayed)
             {
                 int move = value;
                 MoveHelper.ExecuteMove(state, move);

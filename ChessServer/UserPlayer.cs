@@ -21,9 +21,10 @@ namespace ChessCore.GameContext
 
         public override void OnGameEnded(Result result) { }
 
-        public override void OnMovePlayed(int move)
+        public override void OnMovePlayed(int move, bool playedBySelf = false)
         {
-            handler.SendMessage((int) Messages.OnMovePlayed, move);
+            Messages message = playedBySelf ? Messages.OnSelfMovePlayed : Messages.OnEnemyMovePlayed;
+            handler.SendMessage((int) message, move);
         }
 
         public override void OnPlayerTurn()

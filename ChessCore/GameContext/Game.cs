@@ -40,10 +40,16 @@ namespace ChessCore.GameContext
 
         public void PlayMove(int move)
         {
+            int color = MoveHelper.GetPlayerColor(state, move);
+            if ((color == Piece.White && !state.whiteToPlay) || (color == Piece.Black && state.whiteToPlay))
+            {
+                return;
+            }
+
             MoveHelper.ExecuteMove(state, move);
 
-            whitePlayer.OnMovePlayed(move);
-            blackPlayer.OnMovePlayed(move);
+            whitePlayer.OnMovePlayed(move, color == Piece.White);
+            blackPlayer.OnMovePlayed(move, color == Piece.Black);
 
             if (IsGameOver()) return;
             

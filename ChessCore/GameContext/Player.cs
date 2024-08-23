@@ -19,7 +19,7 @@ namespace ChessCore.GameContext
             this.color = color;
         }
 
-        public virtual void OnMovePlayed(int move)
+        public virtual void OnMovePlayed(int move, bool playedBySelf = false)
         {
             Debug.Assert(state != null);
 

@@ -274,5 +274,14 @@ namespace ChessCore.Moves
             return (move >> 28) & 0xF;
         }
 
+        static public int GetPlayerColor(State state, int move)
+        {
+            int startPosition = GetStartPos(move);
+            int piece = state.board[startPosition];
+
+            if (piece == 0) return 0;
+
+            return ((piece | Piece.White) != 0) ? Piece.White : Piece.Black;
+        }
     }
 }
