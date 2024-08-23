@@ -2,16 +2,25 @@
 {
     public class Encoder
     {
-        static public readonly byte[] JoinGame = [1];
-
-        static public byte[] EncodeMove(int move)
+        static public Tuple<int, int> DecodeMessage(byte[] bytes)
         {
-            return [2, 1, (byte)((move >> 24) & 0xff), (byte)((move >> 16) & 0xff), (byte)((move >> 8) & 0xff), (byte)(move & 0xff) ];
+            if (bytes.Length != 8)
+            {
+                throw new ArgumentException("Byte array must have exactly 8 elements.");
+            }
+
+            int code = (bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3];
+            int value = (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7];
+
+            return new Tuple<int, int>(code, value);
         }
 
-        static public int DecodeMove(byte[] move)
+        static public byte[] EncodeMessage(int code, int value)
         {
-            return (move[2] << 24) | (move[3] << 16) | (move[4] << 8) | move[5];
+            return [
+                (byte)((code >> 24) & 0xff), (byte)((code >> 16) & 0xff), (byte)((code >> 8) & 0xff), (byte)(code & 0xff),
+                (byte)((value >> 24) & 0xff), (byte)((value >> 16) & 0xff), (byte)((value >> 8) & 0xff), (byte)(value & 0xff),
+           ];
         }
     }
 }

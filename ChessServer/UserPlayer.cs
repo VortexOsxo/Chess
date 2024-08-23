@@ -1,5 +1,6 @@
 ﻿using ChessCommunication;
 using ChessCore.AI;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ChessCore.GameContext
 {
@@ -17,7 +18,7 @@ namespace ChessCore.GameContext
 
         public override void OnMovePlayed(int move)
         {
-            handler.SendMessage(Encoder.EncodeMove(move));
+            handler.SendMessage((int) Messages.OnMovePlayed, move);
         }
 
         public override void OnPlayerTurn()
@@ -25,29 +26,19 @@ namespace ChessCore.GameContext
 
         }
 
-        private void OnMessageReceived(byte[] data)
+        private void OnMessageReceived(int code, int value)
         {
-            // Game Managing
-            if (data[0] == 1)
+            if (code == (int) Messages.JoinGame)
             {
-                if (data[1] == 0)
-                {
-                    var game = new Game(this, new AIPlayer());
+                var game = new Game(this, new AIPlayer());
 
-                    handler.SendMessage([1, 1, (byte)color]);
-
-                    game.Start();
-                }
+                handler.SendMessage((int) Messages.OnGameJoined, color);
+                game.Start();
             }
-            // In Game Action
-            if (data[0] == 2)
+
+            if (code == (int) Messages.PlayMove)
             {
-                // Playing a move
-                if (data[1] == 1)
-                {
-                    int move = Encoder.DecodeMove(data);
-                    game.PlayMove(move);
-                }
+                game.PlayMove(value);
             }
         }
     }

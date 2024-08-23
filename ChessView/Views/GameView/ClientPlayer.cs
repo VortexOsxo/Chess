@@ -20,41 +20,33 @@ namespace ChessView.Views.GameView
             client = ClientSocketHandler.Instance;
             client.onMessageReceived = OnMessageReceived;
 
-            client.SendMessage(Encoder.JoinGame);
+            client.SendMessage((int)Messages.JoinGame);
             
             state = new State();
         }
 
-        public void OnMessageReceived(byte[] data)
+        public void OnMessageReceived(int code, int value)
         {
-            // Game Managing
-            if (data[0] == 1)
+            if (code == (int) Messages.OnGameJoined)
             {
-                // Join Game Response
-                if (data[1] == 1)
-                {
-                    state = new State();
-                    color = data[2];
-                    mainView.SetState(new Neutral(mainView, this));
-                }
+                state = new State();
+                color = value;
+
+                mainView.SetState(new Neutral(mainView, this));
             }
-            // In Game Action
-            else if (data[0] == 2)
+
+            else if (code == (int) Messages.OnMovePlayed)
             {
-                // Transmitting a played move
-                if (data[1] == 1)
-                {
-                    int move = Encoder.DecodeMove(data);
-                    MoveHelper.ExecuteMove(state, move);
-                    mainView.SetState(new Neutral(mainView, this, new Move(move)));
-                }
+                int move = value;
+                MoveHelper.ExecuteMove(state, move);
+
+                mainView.SetState(new Neutral(mainView, this, new Move(move)));
             }
         }
 
         public void Play(Move move)
         {
-            var a = move.GetMove();
-            client.SendMessage(Encoder.EncodeMove(move.GetMove()));
+            client.SendMessage((int) Messages.PlayMove, move.GetMove());
         }
 
         public void Close()

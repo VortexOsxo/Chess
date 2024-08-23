@@ -4,7 +4,7 @@ namespace ChessCommunication
 {
     public class SocketHandler
     {
-        public Action<byte[]>? onMessageReceived;
+        public Action<int, int>? onMessageReceived;
 
         private readonly TcpClient client;
         private readonly NetworkStream stream;
@@ -21,14 +21,15 @@ namespace ChessCommunication
 
         private void ReceiveMessages(NetworkStream stream)
         {
-            byte[] buffer = new byte[256];
+            byte[] buffer = new byte[8];
             int bytesRead;
 
             try
             {
                 while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
                 {
-                    onMessageReceived?.Invoke(buffer);
+                    Tuple<int, int> message = Encoder.DecodeMessage(buffer);
+                    onMessageReceived?.Invoke(message.Item1, message.Item2);
                 }
             }
             finally
@@ -37,8 +38,9 @@ namespace ChessCommunication
             }
         }
 
-        public void SendMessage(byte[] data)
+        public void SendMessage(int code, int value = 0)
         {
+            byte[] data = Encoder.EncodeMessage(code, value);
             stream.Write(data, 0, data.Length);
         }
 
