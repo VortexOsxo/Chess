@@ -39,11 +39,5 @@ namespace ChessView.Views.GameView
         {
             client.SendMessage((int) Messages.PlayMove, move.GetMove());
         }
-
-        public void Close()
-        {
-            client.Close();
-        }
-
     }
 }
