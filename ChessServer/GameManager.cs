@@ -4,9 +4,28 @@ namespace ChessCore.GameContext
 {
     internal class GameManager
     {
-        private static readonly GameManager instance = new GameManager();
+        static private readonly GameManager instance = new GameManager();
         static public GameManager Instance { get { return instance; } }
 
-        private GameManager() { }
+        private UserPlayer? inQueue;
+
+        private GameManager() {}
+
+        public void JoinSinglePlayerGame(UserPlayer player)
+        {
+            new Game(player, new AIPlayer()).Start();
+        }
+
+        public void JoinGameQueue(UserPlayer player)
+        {
+            if (inQueue == null)
+            {
+                inQueue = player;
+                return;
+            }
+
+            new Game(player, inQueue).Start();
+            inQueue = null;
+        }
     }
 }

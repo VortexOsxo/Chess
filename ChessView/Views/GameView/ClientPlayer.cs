@@ -13,29 +13,20 @@ namespace ChessView.Views.GameView
         private SocketHandler client;
         private MainView mainView;
 
-        public ClientPlayer(MainView mainViewIn)
+        public ClientPlayer(MainView mainViewIn, int colorIn)
         {
             mainView = mainViewIn;
 
             client = ClientSocketHandler.Instance;
             client.onMessageReceived = OnMessageReceived;
 
-            client.SendMessage((int)Messages.JoinGame);
-            
             state = new State();
+            color = colorIn;
         }
 
         public void OnMessageReceived(int code, int value)
         {
-            if (code == (int) Messages.OnGameJoined)
-            {
-                state = new State();
-                color = value;
-
-                mainView.SetState(new Neutral(mainView, this));
-            }
-
-            else if (code == (int) Messages.OnMovePlayed)
+            if (code == (int) Messages.OnMovePlayed)
             {
                 int move = value;
                 MoveHelper.ExecuteMove(state, move);

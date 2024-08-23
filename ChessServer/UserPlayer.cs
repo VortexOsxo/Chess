@@ -1,6 +1,5 @@
 ﻿using ChessCommunication;
 using ChessCore.AI;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ChessCore.GameContext
 {
@@ -13,7 +12,13 @@ namespace ChessCore.GameContext
             handler = handlerIn;
             handler.onMessageReceived = OnMessageReceived;
         }
-        
+
+        public override void OnGameStarted(Game game, int color)
+        {
+            base.OnGameStarted(game, color);
+            handler.SendMessage((int)Messages.OnGameJoined, color);
+        }
+
         public override void OnGameEnded(Result result) { }
 
         public override void OnMovePlayed(int move)
@@ -28,15 +33,19 @@ namespace ChessCore.GameContext
 
         private void OnMessageReceived(int code, int value)
         {
-            if (code == (int) Messages.JoinGame)
+            if (code == (int) Messages.JoinSinglePlayerGame)
             {
-                var game = new Game(this, new AIPlayer());
-
-                handler.SendMessage((int) Messages.OnGameJoined, color);
-                game.Start();
+                var instance = GameManager.Instance;
+                instance.JoinSinglePlayerGame(this);
             }
 
-            if (code == (int) Messages.PlayMove)
+            else if (code == (int) Messages.JoinMultiPlayerGame)
+            {
+                var instance = GameManager.Instance;
+                instance.JoinGameQueue(this);
+            }
+
+            else if (code == (int) Messages.PlayMove)
             {
                 game.PlayMove(value);
             }

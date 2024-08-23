@@ -2,7 +2,8 @@
 {
     public enum Messages
     {
-        JoinGame,
+        JoinSinglePlayerGame,
+        JoinMultiPlayerGame,
         OnGameJoined,
 
         PlayMove,

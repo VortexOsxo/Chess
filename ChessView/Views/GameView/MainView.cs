@@ -28,7 +28,7 @@ namespace ChessView.Views.GameView
         private ClientPlayer player;
         private BaseViewState state;
 
-        public MainView()
+        public MainView(int color)
         {
             startX = (Config.WindowWidth - tileSize * 8) / 2;
             startY = (Config.WindowHeight - tileSize * 8) / 2;
@@ -39,9 +39,9 @@ namespace ChessView.Views.GameView
 
             SetUpPiecesSprite();
 
-            player  = new ClientPlayer(this);
+            player  = new ClientPlayer(this, color);
 
-            SetState(new ComputerTurn(this, player));
+            SetState(color == Piece.White ? new Neutral(this, player) : new ComputerTurn(this, player));
         }
 
         public void SetState(BaseViewState newState)

@@ -3,6 +3,7 @@ using SFML.Graphics;
 using SFML.System;
 using ChessView.Views.GameView;
 using ChessView.Widgets;
+using ChessCommunication;
 
 namespace ChessView.Views
 {
@@ -13,7 +14,6 @@ namespace ChessView.Views
         Button singleplayerButton;
         Button multiplayerButton;
         Button passPlayButton;
-
 
         public HomeView()
         {
@@ -40,9 +40,12 @@ namespace ChessView.Views
         {
             if (singleplayerButton.Collide(e.X, e.Y))
             {
-                return new MainView();
-            } else if (multiplayerButton.Collide(e.X, e.Y))
+                JoinGameService.Instance.AttemptToJoinGame(Messages.JoinSinglePlayerGame);
+            } 
+            
+            else if (multiplayerButton.Collide(e.X, e.Y))
             {
+                JoinGameService.Instance.AttemptToJoinGame(Messages.JoinMultiPlayerGame);
                 return new InQueueView();
             }
             return null;
@@ -50,7 +53,7 @@ namespace ChessView.Views
 
         public View? Update()
         {
-            return null;
+            return JoinGameService.Instance.CanJoinGame();
         }
     }
 }

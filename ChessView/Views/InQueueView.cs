@@ -9,7 +9,6 @@ namespace ChessView.Views
     internal class InQueueView : View
     {
         Text queueText;
-
         Button leaveQueueButton;
 
         public InQueueView()
@@ -41,7 +40,7 @@ namespace ChessView.Views
 
         public View? Update()
         {
-            return null;
+            return JoinGameService.Instance.CanJoinGame();
         }
     }
 }

@@ -19,8 +19,8 @@ namespace ChessCore.GameContext
             this.whitePlayer = whitePlayer;
             this.blackPlayer = blackPlayer;
 
-            whitePlayer.OnGameStarted(this, Piece.White, 0);
-            blackPlayer.OnGameStarted(this, Piece.Black, 0);
+            whitePlayer.OnGameStarted(this, Piece.White);
+            blackPlayer.OnGameStarted(this, Piece.Black);
         }
 
         public void Start()

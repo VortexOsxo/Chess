@@ -11,13 +11,12 @@ namespace ChessCore.GameContext
         public int color;
         public int gameId;
 
-        public void OnGameStarted(Game game, int color, int gameId)
+        public virtual void OnGameStarted(Game game, int color)
         {
             this.game = game;
 
             this.state = new State(game.GetState());
             this.color = color;
-            this.gameId = gameId;
         }
 
         public virtual void OnMovePlayed(int move)
