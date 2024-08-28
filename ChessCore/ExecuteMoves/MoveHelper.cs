@@ -281,7 +281,7 @@ namespace ChessCore.Moves
 
             if (piece == 0) return 0;
 
-            return ((piece | Piece.White) != 0) ? Piece.White : Piece.Black;
+            return ((piece & Piece.White) != 0) ? Piece.White : Piece.Black;
         }
     }
 }

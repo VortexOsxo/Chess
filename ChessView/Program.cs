@@ -35,7 +35,7 @@ class Program
 
     static RenderWindow CreateWindow()
     {
-        RenderWindow window = new(new VideoMode((uint)Config.WindowWidth, (uint)Config.WindowHeight), "Chess", Styles.Default);
+        RenderWindow window = new(new VideoMode((uint)Config.WindowWidth, (uint)Config.WindowHeight), "Chess", Styles.Close);
         window.SetFramerateLimit(60);
 
         window.Closed += (sender, e) => window.Close();
