@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace ChessCore.AI.Evaluation
 {
-    internal class ZobristHasher
+    public class ZobristHasher
     {
         static private readonly int numberOfPieces = 12; // TODO: add Castling and en-passant to it
         static private readonly int boardSize = 64;
