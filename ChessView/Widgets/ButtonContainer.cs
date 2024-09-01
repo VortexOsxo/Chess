@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using SFML.Graphics;
 using SFML.Window;
 using View = ChessView.Views.View;
@@ -23,8 +22,7 @@ public class ButtonContainer
     {
         foreach (var button in buttons.Where(button => button.Collide(e.X, e.Y)))
         {
-            Debug.Assert(button.OnClick != null);
-            return button.OnClick();
+            return button.Click();
         }
 
         return null;

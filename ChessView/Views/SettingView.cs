@@ -1,36 +1,44 @@
 namespace ChessView.Views;
 
-using ChessView.Widgets;
+using Configs.WindowSizes;
+using Widgets;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using ChessView.Configs;
+using Configs;
 
 public class SettingView : View
 {
-    Text welcomeText;
+    readonly Text welcomeText;
 
-    Button smallButton;
-    Button mediumButton;
-    Button bigButton;
+    readonly ButtonContainer buttons;
     
     public SettingView()
     {
         welcomeText = Utils.CreateText("Change window size", new Vector2f(0, 50));
-        int left = (int)((Config.WindowWidth - welcomeText.GetGlobalBounds().Width) / 2);
+        var left = (int)((Config.WindowWidth - welcomeText.GetGlobalBounds().Width) / 2);
         welcomeText.Position = new Vector2f(left, 50);
         
-        int buttonLeft = (Config.WindowWidth - Config.ButtonWidth) / 2;
+        buttons = new ButtonContainer();
+        
+        var buttonLeft = (Config.WindowWidth - Config.ButtonWidth) / 2;
 
-        smallButton = new Button(new Vector2f(buttonLeft, 300), "Small Window");
-        mediumButton = new Button(new Vector2f(buttonLeft, 400), "Medium Window");
-        bigButton = new Button(new Vector2f(buttonLeft, 500), "Big Window");
+        buttons.Add(new Button(new Vector2f(buttonLeft, 300), "Small Window", () =>
+        {
+            Config.SetWindowSize(new SmallWindowSize());
+            return new HomeView();
+        }));
+        buttons.Add( new Button(new Vector2f(buttonLeft, 400), "Medium Window", () => new HomeView()));
+        buttons.Add(new Button(new Vector2f(buttonLeft, 500), "Big Window", () =>
+        {
+            Config.SetWindowSize(new BigWindowSize());
+            return new HomeView();
+        }));
     }
     public void Draw(RenderWindow window)
     {
-        window.Draw(smallButton);
-        window.Draw(mediumButton);
-        window.Draw(bigButton);
+        buttons.Draw(window);
+        window.Draw(welcomeText);
     }
 
     public View? Update()
@@ -40,6 +48,6 @@ public class SettingView : View
 
     public View? OnMousePressed(MouseButtonEventArgs e)
     {
-        return new HomeView();
+        return buttons.HandleClick(e);
     }
 }

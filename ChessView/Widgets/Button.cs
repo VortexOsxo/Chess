@@ -3,34 +3,40 @@ using SFML.System;
 using View = ChessView.Views.View;
 using ChessView.Configs;
 
-namespace ChessView.Widgets
+namespace ChessView.Widgets;
+
+public class Button : Drawable
 {
-    public class Button : Drawable
+    private readonly Func<View?> onClick;
+    
+    private Text text;
+    private RectangleShape shape;
+    
+
+    public Button(Vector2f position, string textInput, Func<View> onClickIn)
     {
-        public Func<View>? OnClick = null;
+        shape = new RectangleShape(new Vector2f(Config.ButtonWidth, Config.ButtonHeight));
+        shape.FillColor = Config.DarkTilesColor;
+        shape.Position = position;
+
+        text = Utils.CreateText(textInput, position);
         
-        private Text text;
-        private RectangleShape shape;
-        
+        onClick = onClickIn;
+    }
 
-        public Button(Vector2f position, string textInput)
-        {
-            shape = new RectangleShape(new Vector2f(Config.ButtonWidth, Config.ButtonHeight));
-            shape.FillColor = Config.DarkTilesColor;
-            shape.Position = position;
+    public void Draw(RenderTarget target, RenderStates states)
+    {
+        target.Draw(shape, states);
+        target.Draw(text, states);
+    }
 
-            text = Utils.CreateText(textInput, position);
-        }
+    public bool Collide(int x, int y)
+    {
+        return shape.GetGlobalBounds().Contains(x, y);
+    }
 
-        public void Draw(RenderTarget target, RenderStates states)
-        {
-            target.Draw(shape, states);
-            target.Draw(text, states);
-        }
-
-        public bool Collide(int x, int y)
-        {
-            return shape.GetGlobalBounds().Contains(x, y);
-        }
+    public View? Click()
+    {
+        return onClick.Invoke();
     }
 }

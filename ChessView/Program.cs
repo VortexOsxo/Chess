@@ -2,6 +2,7 @@
 using SFML.Graphics;
 using SFML.Window;
 using ChessView.Configs;
+using SFML.System;
 
 class Program
 {
@@ -10,6 +11,12 @@ class Program
     static void Main()
     {
         RenderWindow window = CreateWindow();
+
+        Config.OnWindowSizeChanged = () =>
+        {
+            window.Size = new Vector2u((uint)Config.WindowWidth, (uint)Config.WindowHeight);
+        };
+        
         view = new ChessView.Views.HomeView();
 
         while (window.IsOpen)

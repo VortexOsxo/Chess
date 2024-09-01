@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using ChessView.Widgets;
+﻿using ChessView.Widgets;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -9,21 +8,21 @@ namespace ChessView.Views
 {
     internal class InQueueView : View
     {
-        Text queueText;
-        
-        ButtonContainer buttons;
+        readonly Text queueText;
+
+        readonly ButtonContainer buttons;
 
         public InQueueView()
         {
             queueText = new Text("Currently in queue", Config.Font);
-            int left = (int)((Config.WindowWidth - queueText.GetGlobalBounds().Width) / 2);
+            var left = (int)((Config.WindowWidth - queueText.GetGlobalBounds().Width) / 2);
             queueText.Position = new Vector2f(left, 50);
             
             buttons = new ButtonContainer();
 
-            int buttonLeft = (Config.WindowWidth - Config.ButtonWidth) / 2;
+            var buttonLeft = (Config.WindowWidth - Config.ButtonWidth) / 2;
 
-            buttons.Add(new Button(new Vector2f(buttonLeft, 300), "Leave Queue"));
+            buttons.Add(new Button(new Vector2f(buttonLeft, 300), "Leave Queue", () => new HomeView()));
         }
 
 
