@@ -1,10 +1,11 @@
 ﻿using ChessView;
 using SFML.Graphics;
 using SFML.Window;
+using ChessView.Configs;
 
 class Program
 {
-    static private ChessView.Views.View? view;
+    private static ChessView.Views.View? view;
 
     static void Main()
     {

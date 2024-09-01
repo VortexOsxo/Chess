@@ -1,5 +1,6 @@
 using SFML.Graphics;
 using SFML.System;
+using ChessView.Configs;
 
 namespace ChessView.Widgets;
 

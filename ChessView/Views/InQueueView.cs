@@ -2,7 +2,7 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-
+using ChessView.Configs;
 
 namespace ChessView.Views
 {

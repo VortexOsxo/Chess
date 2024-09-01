@@ -3,6 +3,7 @@ using SFML.System;
 using SFML.Window;
 using ChessCore;
 using ChessView.Views.GameView.ViewState;
+using ChessView.Configs;
 
 namespace ChessView.Views.GameView
 {
