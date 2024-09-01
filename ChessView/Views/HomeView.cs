@@ -1,7 +1,6 @@
 ﻿using SFML.Window;
 using SFML.Graphics;
 using SFML.System;
-using ChessView.Views.GameView;
 using ChessView.Widgets;
 using ChessCommunication;
 
@@ -17,15 +16,16 @@ namespace ChessView.Views
 
         public HomeView()
         {
-            homeText = new Text("Welcome to Chess", Config.Font);
+            homeText = Utils.CreateText("Welcome to Chess", new Vector2f(0, 50));
             int left = (int)((Config.WindowWidth - homeText.GetGlobalBounds().Width) / 2);
             homeText.Position = new Vector2f(left, 50);
 
+
             int buttonLeft = (Config.WindowWidth - Config.ButtonWidth) / 2;
 
-            singleplayerButton = new Button(new Vector2f(buttonLeft, 300), new Text("SinglePlayer", Config.Font));
-            multiplayerButton = new Button(new Vector2f(buttonLeft, 400), new Text("MultiPlayer", Config.Font));
-            passPlayButton = new Button(new Vector2f(buttonLeft, 500), new Text("Pass and Play", Config.Font));
+            singleplayerButton = new Button(new Vector2f(buttonLeft, 300), "SinglePlayer");
+            multiplayerButton = new Button(new Vector2f(buttonLeft, 400), "MultiPlayer");
+            passPlayButton = new Button(new Vector2f(buttonLeft, 500), "Pass and Play");
         }
 
         public void Draw(RenderWindow window)

@@ -11,31 +11,19 @@ namespace ChessView.Views.GameView
         private readonly int startX;
         private readonly int startY;
 
-
-        // Tiles Variables
-        private const int tileSize = 68;
-
-        private readonly RectangleShape tile = new RectangleShape(new Vector2f(tileSize, tileSize));
+        private readonly RectangleShape tile = new RectangleShape(new Vector2f(Config.TileSize, Config.TileSize));
 
         //Pieces Variables
         private Dictionary<int, Sprite> piecesSprite = new Dictionary<int, Sprite>();
-
-        // Create a Text object
-        private Text text;
-
-
+        
         // View State Variables
         private ClientPlayer player;
         private BaseViewState state;
 
         public MainView(int color)
         {
-            startX = (Config.WindowWidth - tileSize * 8) / 2;
-            startY = (Config.WindowHeight - tileSize * 8) / 2;
-
-            text = new Text("", Config.Font);
-            text.CharacterSize = 24;
-            text.FillColor = Color.White;
+            startX = (Config.WindowWidth - Config.TileSize * 8) / 2;
+            startY = (Config.WindowHeight - Config.TileSize * 8) / 2;
 
             SetUpPiecesSprite();
 
@@ -101,22 +89,24 @@ namespace ChessView.Views.GameView
                 foreach (var piece in pieces)
                 {
                     Texture texture = new Texture($"assets/{color.String}{piece.String}.png");
-                    piecesSprite.Add(color.Value | piece.Value, new Sprite(texture));
+                    Sprite sprite = new Sprite(texture);
+                    sprite.Scale = new Vector2f(Config.TileSize / 68f, Config.TileSize / 68f);
+                    piecesSprite.Add(color.Value | piece.Value, sprite);
                 }
             }
         }
 
         public int GetIndexClicked(MouseButtonEventArgs e)
         {
-            return (e.X - startX) / tileSize + (e.Y - startY) / tileSize * 8;
+            return (e.X - startX) / Config.TileSize + (e.Y - startY) / Config.TileSize * 8;
         }
 
         public int GetChosenPiece(MouseButtonEventArgs e)
         {
-            if (startX + -2 * tileSize > e.X || startX + -1 * tileSize < e.X) return 0;
+            if (startX + -2 * Config.TileSize > e.X || startX + -1 * Config.TileSize < e.X) return 0;
             for (int i = 2; i < 6; ++i)
             {
-                if (startY + i * tileSize < e.Y && startY + (i + 1) * tileSize > e.Y)
+                if (startY + i * Config.TileSize < e.Y && startY + (i + 1) * Config.TileSize > e.Y)
                 {
                     return i | player.color;
                 }
@@ -126,7 +116,7 @@ namespace ChessView.Views.GameView
 
         private void DrawBoard(RenderWindow window, int col, int row)
         {
-            tile.Position = new Vector2f(startX + col * tileSize, startY + row * tileSize);
+            tile.Position = new Vector2f(startX + col * Config.TileSize, startY + row * Config.TileSize);
             tile.FillColor = (row + col) % 2 == 0
                 ? BaseViewState.highlighted[row * 8 + col] ? Config.LightTilesHighlightedColor : Config.LightTilesColor
                 : BaseViewState.highlighted[row * 8 + col] ? Config.DarkTilesHighlightedColor : Config.DarkTilesColor;
@@ -139,7 +129,7 @@ namespace ChessView.Views.GameView
             Sprite? sprite = piecesSprite.GetValueOrDefault(player.state.board[row* 8 + col]);
             if (sprite == null) return;
 
-            sprite.Position = new Vector2f(startX + col * tileSize, startY + row * tileSize);
+            sprite.Position = new Vector2f(startX + col * Config.TileSize, startY + row * Config.TileSize);
             window.Draw(sprite);
         }
 
@@ -148,7 +138,7 @@ namespace ChessView.Views.GameView
             Sprite? sprite = piecesSprite.GetValueOrDefault(player.state.board[(7 - row) * 8 + (7 - col)]);
             if (sprite == null) return;
 
-            sprite.Position = new Vector2f(startX + (col) * tileSize, startY + (row) * tileSize);
+            sprite.Position = new Vector2f(startX + (col) * Config.TileSize, startY + (row) * Config.TileSize);
             window.Draw(sprite);
         }
 
@@ -156,7 +146,7 @@ namespace ChessView.Views.GameView
         {
             for (int i = 2; i < 6; ++i)
             {
-                tile.Position = new Vector2f(startX + -2 * tileSize, startY + i * tileSize);
+                tile.Position = new Vector2f(startX + -2 * Config.TileSize, startY + i * Config.TileSize);
                 tile.FillColor = i % 2 == 0 ? Config.LightTilesColor : Config.DarkTilesColor;
                 window.Draw(tile);
 

@@ -2,14 +2,17 @@
 
 namespace ChessView
 {
-    internal class Config
+    internal static class Config
     {
-        public static Font Font = new Font("assets/arial.ttf");
-        
-        public static int WindowHeight = 864;
-        public static int WindowWidth = 1536;
+        public static readonly Font Font = new Font("assets/arial.ttf");
 
-        public static int ButtonWidth = 200;
+        public static int WindowWidth => BigWindow.WindowWidth;
+        public static int WindowHeight => BigWindow.WindowHeight;
+        public static int ButtonWidth => BigWindow.ButtonWidth;
+        public static int ButtonHeight => BigWindow.ButtonHeight;
+        public static uint FontSize => BigWindow.FontSize;
+        public static int TileSize => BigWindow.TileSize;
+
 
         public static readonly Color BackgroundColor = new Color(50, 50, 50, 255);
 
@@ -17,5 +20,17 @@ namespace ChessView
         public static readonly Color DarkTilesColor = new Color(118, 150, 86, 255);
         public static readonly Color LightTilesHighlightedColor = new Color(255, 255, 255, 255);
         public static readonly Color DarkTilesHighlightedColor = new Color(186, 202, 68, 255);
+        
+        private static class BigWindow
+        {
+            public static readonly int WindowHeight = 1350;
+            public static readonly int WindowWidth = 2400;
+
+            public static readonly int ButtonWidth = 500;
+            public static readonly int ButtonHeight = 75;
+            
+            public static readonly uint FontSize = 50;
+            public static readonly int TileSize = 120;
+        }
     }
 }

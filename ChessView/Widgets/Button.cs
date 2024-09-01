@@ -8,14 +8,13 @@ namespace ChessView.Widgets
         public Text text;
         public RectangleShape shape;
 
-        public Button(Vector2f position, Text textInput)
+        public Button(Vector2f position, string textInput)
         {
-            shape = new RectangleShape(new Vector2f(200f, 50f));
+            shape = new RectangleShape(new Vector2f(Config.ButtonWidth, Config.ButtonHeight));
             shape.FillColor = Config.DarkTilesColor;
             shape.Position = position;
 
-            text = textInput;
-            text.Position = position;
+            text = Utils.CreateText(textInput, position);
         }
 
         public void Draw(RenderTarget target, RenderStates states)

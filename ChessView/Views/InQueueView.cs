@@ -19,7 +19,7 @@ namespace ChessView.Views
 
             int buttonLeft = (Config.WindowWidth - Config.ButtonWidth) / 2;
 
-            leaveQueueButton = new Button(new Vector2f(buttonLeft, 300), new Text("Leave Queue", Config.Font));
+            leaveQueueButton = new Button(new Vector2f(buttonLeft, 300), "Leave Queue");
         }
 
 
