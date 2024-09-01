@@ -1,12 +1,16 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using View = ChessView.Views.View;
 
 namespace ChessView.Widgets
 {
     public class Button : Drawable
     {
-        public Text text;
-        public RectangleShape shape;
+        public Func<View>? OnClick = null;
+        
+        private Text text;
+        private RectangleShape shape;
+        
 
         public Button(Vector2f position, string textInput)
         {

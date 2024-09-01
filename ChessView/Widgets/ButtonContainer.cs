@@ -1,0 +1,32 @@
+using System.Diagnostics;
+using SFML.Graphics;
+using SFML.Window;
+using View = ChessView.Views.View;
+
+namespace ChessView.Widgets;
+
+public class ButtonContainer
+{
+    private List<Button> buttons = new();
+
+    public void Add(Button button)
+    {
+        buttons.Add(button);
+    }
+
+    public void Draw(RenderWindow window)
+    {
+        buttons.ForEach(window.Draw);
+    }
+
+    public View? HandleClick(MouseButtonEventArgs e)
+    {
+        foreach (var button in buttons.Where(button => button.Collide(e.X, e.Y)))
+        {
+            Debug.Assert(button.OnClick != null);
+            return button.OnClick();
+        }
+
+        return null;
+    }
+}
