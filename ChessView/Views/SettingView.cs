@@ -1,9 +1,10 @@
+namespace ChessView.Views;
+
 using ChessView.Widgets;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-
-namespace ChessView.Views;
+using ChessView.Configs;
 
 public class SettingView : View
 {

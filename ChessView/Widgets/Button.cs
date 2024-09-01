@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using View = ChessView.Views.View;
+using ChessView.Configs;
 
 namespace ChessView.Widgets
 {

@@ -3,6 +3,7 @@ using SFML.Graphics;
 using SFML.System;
 using ChessView.Widgets;
 using ChessCommunication;
+using ChessView.Configs;
 
 namespace ChessView.Views
 {
