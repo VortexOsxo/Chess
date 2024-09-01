@@ -13,6 +13,7 @@ namespace ChessView.Views
         Button singleplayerButton;
         Button multiplayerButton;
         Button passPlayButton;
+        Button settingButton;
 
         public HomeView()
         {
@@ -26,6 +27,7 @@ namespace ChessView.Views
             singleplayerButton = new Button(new Vector2f(buttonLeft, 300), "SinglePlayer");
             multiplayerButton = new Button(new Vector2f(buttonLeft, 400), "MultiPlayer");
             passPlayButton = new Button(new Vector2f(buttonLeft, 500), "Pass and Play");
+            settingButton = new Button(new Vector2f(buttonLeft, 600), "Settings");
         }
 
         public void Draw(RenderWindow window)
@@ -34,6 +36,7 @@ namespace ChessView.Views
             window.Draw(singleplayerButton);
             window.Draw(multiplayerButton);
             window.Draw(passPlayButton);
+            window.Draw(settingButton);
         }
 
         public View? OnMousePressed(MouseButtonEventArgs e)
@@ -47,6 +50,11 @@ namespace ChessView.Views
             {
                 JoinGameService.Instance.AttemptToJoinGame(Messages.JoinMultiPlayerGame);
                 return new InQueueView();
+            }
+            
+            else if (settingButton.Collide(e.X, e.Y))
+            {
+                return new SettingView();
             }
             return null;
         }
