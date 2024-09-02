@@ -6,17 +6,6 @@ namespace ChessCore.Moves
 {
     public class MoveHelper
     {
-        public const int SimpleMove = 1;
-        public const int EnPassant = 2;
-        
-        public const int Castlewl = 3;
-        public const int Castlewr = 4;
-        public const int Castlebl = 5;
-        public const int Castlebr = 6;
-
-        public const int Promotion = 7;
-
-
         // Flags
         // 0-3: Type, 4-9: EndPos, 10-15: StartPos, 16-21 Tag, 28-31: Last EnPassant
         // Tag 0-11
@@ -56,7 +45,7 @@ namespace ChessCore.Moves
 
             switch (GetMoveType(move))
             {
-                case SimpleMove:
+                case (int)MoveType.SimpleMove:
                     eatenPiece = state.board[endPosition];
                     state.board[endPosition] = state.board[startPosition];
                     state.board[startPosition] = 0;
@@ -64,7 +53,7 @@ namespace ChessCore.Moves
                     state.AddFlags(GetFlags(move));
                     break;
 
-                case EnPassant:
+                case (int)MoveType.EnPassant:
                     if (endPosition - startPosition == -9
                         || endPosition - startPosition == 7)
                     {
@@ -80,7 +69,7 @@ namespace ChessCore.Moves
                     state.AddFlags(GetFlags(move));
                     break;
 
-                case Promotion:
+                case (int)MoveType.Promotion:
                     int promotedInto = (endPosition/8 == 0 ? Piece.White : Piece.Black) | GetFlags(move);
                     eatenPiece = state.board[endPosition];
                     state.board[endPosition] = promotedInto;
@@ -88,7 +77,7 @@ namespace ChessCore.Moves
 
                     break;
 
-                case Castlewl:
+                case (int)MoveType.Castlewl:
                     state.board[56] = 0;
                     state.board[58] = Piece.White | Piece.King;
                     state.board[59] = Piece.White | Piece.Rook;
@@ -97,7 +86,7 @@ namespace ChessCore.Moves
                     state.AddFlags(State.kingMove);
                     break;
 
-                case Castlewr:
+                case (int)MoveType.Castlewr:
                     state.board[63] = 0;
                     state.board[62] = Piece.White | Piece.King;
                     state.board[61] = Piece.White | Piece.Rook;
@@ -106,7 +95,7 @@ namespace ChessCore.Moves
                     state.AddFlags(State.kingMove);
                     break;
 
-                case Castlebl:
+                case (int)MoveType.Castlebl:
                     state.board[0] = 0;
                     state.board[2] = Piece.Black | Piece.King;
                     state.board[3] = Piece.Black | Piece.Rook;
@@ -115,16 +104,13 @@ namespace ChessCore.Moves
                     state.AddFlags(State.kingMove << 3);
                     break;
 
-                case Castlebr:
+                case (int)MoveType.Castlebr:
                     state.board[7] = 0;
                     state.board[6] = Piece.Black | Piece.King;
                     state.board[5] = Piece.Black | Piece.Rook;
                     state.board[4] = 0;
 
                     state.AddFlags(State.kingMove << 3);
-                    break;
-
-                default:
                     break;
             }
 
@@ -142,13 +128,13 @@ namespace ChessCore.Moves
 
             switch(GetMoveType(move))
             {
-                case SimpleMove:
+                case (int)MoveType.SimpleMove:
                     state.board[startPosition] = state.board[endPosition];
                     state.board[endPosition] = eatenPiece;
                     state.RemoveFlags(GetFlags(move));
                     break;
 
-                case EnPassant:
+                case (int)MoveType.EnPassant:
                     if (endPosition - startPosition == -9
                         || endPosition - startPosition == 7)
                     {
@@ -161,13 +147,13 @@ namespace ChessCore.Moves
                     state.RemoveFlags(GetFlags(move));
                     break;
 
-                case Promotion:
+                case (int)MoveType.Promotion:
                     int promotedFrom = (endPosition / 8 == 0 ? Piece.White : Piece.Black) | Piece.Pawn;
                     state.board[startPosition] = promotedFrom;
                     state.board[endPosition] = eatenPiece;
                     break;
 
-                case Castlewl:
+                case (int)MoveType.Castlewl:
                     state.board[56] = Piece.White | Piece.Rook;
                     state.board[58] = 0;
                     state.board[59] = 0;
@@ -175,7 +161,7 @@ namespace ChessCore.Moves
                     state.RemoveFlags(State.kingMove);
                     break;
 
-                case Castlewr:
+                case (int)MoveType.Castlewr:
                     state.board[63] = Piece.White | Piece.Rook;
                     state.board[62] = 0;
                     state.board[61] = 0;
@@ -183,7 +169,7 @@ namespace ChessCore.Moves
                     state.RemoveFlags(State.kingMove);
                     break;
 
-                case Castlebl:
+                case (int)MoveType.Castlebl:
                     state.board[0] = Piece.Black | Piece.Rook;
                     state.board[2] = 0;
                     state.board[3] = 0;
@@ -191,15 +177,12 @@ namespace ChessCore.Moves
                     state.RemoveFlags(State.kingMove << 3);
                     break;
 
-                case Castlebr:
+                case (int)MoveType.Castlebr:
                     state.board[7] = Piece.Black | Piece.Rook;
                     state.board[6] = 0;
                     state.board[5] = 0;
                     state.board[4] = Piece.Black | Piece.King;
                     state.RemoveFlags(State.kingMove << 3);
-                    break;
-
-                default:
                     break;
             }
             state.AddFlags((GetEnPassant(move) << 6));

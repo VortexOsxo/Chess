@@ -45,7 +45,7 @@ namespace ChessCore.AI.Evaluation
             // TODO: Handle all aspect of state(castle / en passant available, whose turn it is, etc...)
 
             int moveType = MoveHelper.GetMoveType(executedMove);
-            if (moveType == MoveHelper.SimpleMove)
+            if (moveType == (int)MoveType.SimpleMove)
             {
                 int movedPiece = board[endPos];
                 int eatenPiece = MoveHelper.GetEateanPiece(executedMove);
@@ -56,7 +56,7 @@ namespace ChessCore.AI.Evaluation
                 previousHash = AddPieceToHash(previousHash, movedPiece, startPos); // Remove hash from the moved piece from the start position
             }
 
-            else if (moveType == MoveHelper.Promotion)
+            else if (moveType == (int)MoveType.Promotion)
             {
                 int eatenPiece = MoveHelper.GetEateanPiece(executedMove);
                 int movedPiece = Piece.Pawn | (whiteToPlay ? Piece.Black : Piece.White);
@@ -68,7 +68,7 @@ namespace ChessCore.AI.Evaluation
                 previousHash = AddPieceToHash(previousHash, movedPiece, startPos); // Remove hash from the moved pawn from the start position
             }
 
-            else if (moveType == MoveHelper.Castlebl)
+            else if (moveType == (int)MoveType.Castlebl)
             {
                 int rookPiece = Piece.Rook & Piece.Black;
                 int kingPiece = Piece.King & Piece.Black;
@@ -79,7 +79,7 @@ namespace ChessCore.AI.Evaluation
                 previousHash = AddPieceToHash(previousHash, kingPiece, 2); // Added King
             }
 
-            else if (moveType == MoveHelper.Castlebr)
+            else if (moveType == (int)MoveType.Castlebr)
             {
                 int rookPiece = Piece.Rook & Piece.Black;
                 int kingPiece = Piece.King & Piece.Black;
@@ -90,7 +90,7 @@ namespace ChessCore.AI.Evaluation
                 previousHash = AddPieceToHash(previousHash, kingPiece, 6); // Added King
             }
 
-            else if (moveType == MoveHelper.Castlewl)
+            else if (moveType == (int)MoveType.Castlewl)
             {
                 int rookPiece = Piece.Rook & Piece.White;
                 int kingPiece = Piece.King & Piece.White;
@@ -101,7 +101,7 @@ namespace ChessCore.AI.Evaluation
                 previousHash = AddPieceToHash(previousHash, kingPiece, 58); // Added King
             }
 
-            else if (moveType == MoveHelper.Castlewr)
+            else if (moveType == (int)MoveType.Castlewr)
             {
                 int rookPiece = Piece.Rook & Piece.White;
                 int kingPiece = Piece.King & Piece.White;
@@ -112,7 +112,7 @@ namespace ChessCore.AI.Evaluation
                 previousHash = AddPieceToHash(previousHash, kingPiece, 62); // Added King
             }
 
-            else if (moveType == MoveHelper.EnPassant)
+            else if (moveType == (int)MoveType.EnPassant)
             {
                 int eatenPiece = MoveHelper.GetEateanPiece(executedMove);
                 int movedPiece = Piece.Pawn | (whiteToPlay ? Piece.Black : Piece.White);

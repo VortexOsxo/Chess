@@ -22,7 +22,7 @@ namespace ChessCore.Moves
 
         public bool IsPromotion()
         {
-            return MoveHelper.GetMoveType(move) == MoveHelper.Promotion;
+            return MoveHelper.GetMoveType(move) == (int)MoveType.Promotion;
         }
 
         public void ChangePromotionType(int type)
