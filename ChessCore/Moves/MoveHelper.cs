@@ -4,7 +4,7 @@ using ChessCore.GameContext;
 
 namespace ChessCore.Moves
 {
-    public class MoveHelper
+    public static class MoveHelper
     {
         // Flags
         // 0-3: Type, 4-9: EndPos, 10-15: StartPos, 16-21 Tag, 28-31: Last EnPassant
@@ -18,27 +18,26 @@ namespace ChessCore.Moves
         private const int TagFilter = 0x003F0000;
 
 
-        static public int CreateMove(int startPos, int endPos, int type = 1, int args = 0) 
+        public static int CreateMove(int startPos, int endPos, int type = 1, int args = 0) 
         {
             return type | (endPos << 4) | (startPos << 10) | args << 16;
         }
 
-        static public bool CreateValidState(State state, int move)
+        public static bool CreateValidState(State state, int move)
         {
-            bool result;
             move = ExecuteMove(state, move);
-            result = ValidState.IsStateValid(state);
+            var result = ValidState.IsStateValid(state);
             RevertMove(state, move);
             return result;
         }
 
-        static public int ExecuteMove(State state, int move)
+        public static int ExecuteMove(State state, int move)
         {
             state.whiteToPlay = !state.whiteToPlay;
-            int endPosition = GetEndPos(move);
-            int startPosition = GetStartPos(move);
+            var endPosition = GetEndPos(move);
+            var startPosition = GetStartPos(move);
 
-            int eatenPiece = 0;
+            var eatenPiece = 0;
 
             move = SetOldEnPassant(move, (state.GetFlags() & (0xf << 6))>>6);
             state.RemoveFlags(((1 << 14) - 1) << 6);
@@ -70,47 +69,24 @@ namespace ChessCore.Moves
                     break;
 
                 case (int)MoveType.Promotion:
-                    int promotedInto = (endPosition/8 == 0 ? Piece.White : Piece.Black) | GetFlags(move);
+                    var promotedInto = (endPosition/8 == 0 ? Piece.White : Piece.Black) | GetFlags(move);
                     eatenPiece = state.board[endPosition];
                     state.board[endPosition] = promotedInto;
-                    state.board[startPosition] = 0;
-
+                    state.board[startPosition] = 0; 
                     break;
 
                 case (int)MoveType.Castlewl:
-                    state.board[56] = 0;
-                    state.board[58] = Piece.White | Piece.King;
-                    state.board[59] = Piece.White | Piece.Rook;
-                    state.board[60] = 0;
-                    
-                    state.AddFlags(State.kingMove);
-                    break;
-
                 case (int)MoveType.Castlewr:
-                    state.board[63] = 0;
-                    state.board[62] = Piece.White | Piece.King;
-                    state.board[61] = Piece.White | Piece.Rook;
-                    state.board[60] = 0;
-
-                    state.AddFlags(State.kingMove);
-                    break;
-
                 case (int)MoveType.Castlebl:
-                    state.board[0] = 0;
-                    state.board[2] = Piece.Black | Piece.King;
-                    state.board[3] = Piece.Black | Piece.Rook;
-                    state.board[4] = 0;
-
-                    state.AddFlags(State.kingMove << 3);
-                    break;
-
                 case (int)MoveType.Castlebr:
-                    state.board[7] = 0;
-                    state.board[6] = Piece.Black | Piece.King;
-                    state.board[5] = Piece.Black | Piece.Rook;
-                    state.board[4] = 0;
-
-                    state.AddFlags(State.kingMove << 3);
+                    var castleMove = CastleMove.GetCastleMove(GetMoveType(move));
+                    
+                    state.board[castleMove.StartKingPos] = 0;
+                    state.board[castleMove.EndRookPos] = castleMove.Color | Piece.King;
+                    state.board[castleMove.EndKingPos] = castleMove.Color | Piece.Rook;
+                    state.board[castleMove.StartRookPos] = 0;
+                    
+                    state.AddFlags(State.kingMove << castleMove.Color == Piece.White ? 0 : 3);
                     break;
             }
 
@@ -118,13 +94,13 @@ namespace ChessCore.Moves
             return move;
         }
 
-        static public void RevertMove(State state, int move)
+        public static void RevertMove(State state, int move)
         {
             state.whiteToPlay = !state.whiteToPlay;
-            int endPosition = GetEndPos(move);
-            int startPosition = GetStartPos(move);
+            var endPosition = GetEndPos(move);
+            var startPosition = GetStartPos(move);
 
-            int eatenPiece = GetEateanPiece(move);
+            var eatenPiece = GetEateanPiece(move);
 
             switch(GetMoveType(move))
             {
@@ -148,71 +124,53 @@ namespace ChessCore.Moves
                     break;
 
                 case (int)MoveType.Promotion:
-                    int promotedFrom = (endPosition / 8 == 0 ? Piece.White : Piece.Black) | Piece.Pawn;
+                    var promotedFrom = (endPosition / 8 == 0 ? Piece.White : Piece.Black) | Piece.Pawn;
                     state.board[startPosition] = promotedFrom;
                     state.board[endPosition] = eatenPiece;
                     break;
 
                 case (int)MoveType.Castlewl:
-                    state.board[56] = Piece.White | Piece.Rook;
-                    state.board[58] = 0;
-                    state.board[59] = 0;
-                    state.board[60] = Piece.White | Piece.King;
-                    state.RemoveFlags(State.kingMove);
-                    break;
-
                 case (int)MoveType.Castlewr:
-                    state.board[63] = Piece.White | Piece.Rook;
-                    state.board[62] = 0;
-                    state.board[61] = 0;
-                    state.board[60] = Piece.White | Piece.King;
-                    state.RemoveFlags(State.kingMove);
-                    break;
-
                 case (int)MoveType.Castlebl:
-                    state.board[0] = Piece.Black | Piece.Rook;
-                    state.board[2] = 0;
-                    state.board[3] = 0;
-                    state.board[4] = Piece.Black | Piece.King;
-                    state.RemoveFlags(State.kingMove << 3);
-                    break;
-
                 case (int)MoveType.Castlebr:
-                    state.board[7] = Piece.Black | Piece.Rook;
-                    state.board[6] = 0;
-                    state.board[5] = 0;
-                    state.board[4] = Piece.Black | Piece.King;
-                    state.RemoveFlags(State.kingMove << 3);
+                    var castleMove = CastleMove.GetCastleMove(GetMoveType(move));
+                    
+                    state.board[castleMove.StartKingPos] = castleMove.Color | Piece.King;
+                    state.board[castleMove.EndRookPos] = 0;
+                    state.board[castleMove.EndKingPos] = 0;
+                    state.board[castleMove.StartRookPos] = castleMove.Color | Piece.Rook;
+                    
+                    state.AddFlags(State.kingMove << castleMove.Color == Piece.White ? 0 : 3);
                     break;
             }
             state.AddFlags((GetEnPassant(move) << 6));
         }
 
-        static public int GetStartPos(int move) 
+        public static int GetStartPos(int move) 
         {
             return (move & StartPosFilter) >> 10;
         }
 
-        static public int GetEndPos(int move)
+        public static int GetEndPos(int move)
         {
             return (move & EndPosFilter) >> 4;
         }
 
-        static public int GetMoveType(int move)
+        public static int GetMoveType(int move)
         {
             return (move & MoveTypeFilter);
         }
 
-        static private int GetFlags(int move)
+        private static int GetFlags(int move)
         {
-            int tags = (move & TagFilter) >> 16;
-            int type = tags & 3;
+            var tags = (move & TagFilter) >> 16;
+            var type = tags & 3;
             switch (type)
             {
                 case 0: //No Tags
                     return 0;
                 case 1: //Castle
-                    int shift = ((tags >> 2) & 0x1) == 1 ? 0 : 3;
+                    var shift = ((tags >> 2) & 0x1) == 1 ? 0 : 3;
                     switch ((tags>>3) & 3)
                     {
                         case 1:
@@ -233,38 +191,38 @@ namespace ChessCore.Moves
             }
         }
 
-        static public int SetEatenPiece(int move, int eatenPiece)
+        public static int SetEatenPiece(int move, int eatenPiece)
         {
             move &= ~(0x1F << 23);
             move |= (eatenPiece << 23);
             return move;
         }
 
-        static public int GetEateanPiece(int move)
+        public static int GetEateanPiece(int move)
         {
             return (move >> 23) & 0x1F;
         }
 
-        static public int SetOldEnPassant(int move, int enPassant)
+        public static int SetOldEnPassant(int move, int enPassant)
         {
             move &= 0x0FFFFFFF;
             move |= (enPassant << 28);
             return move;
         }
 
-        static public int GetEnPassant(int move)
+        public static int GetEnPassant(int move)
         {
             return (move >> 28) & 0xF;
         }
 
-        static public int GetPlayerColor(State state, int move)
+        public static int GetPlayerColor(State state, int move)
         {
-            int startPosition = GetStartPos(move);
-            int piece = state.board[startPosition];
+            var startPosition = GetStartPos(move);
+            var piece = state.board[startPosition];
 
             if (piece == 0) return 0;
 
-            return ((piece & Piece.White) != 0) ? Piece.White : Piece.Black;
+            return (piece & Piece.White) != 0 ? Piece.White : Piece.Black;
         }
     }
 }

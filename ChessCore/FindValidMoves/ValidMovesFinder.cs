@@ -3,7 +3,7 @@ using ChessCore.GameContext;
 
 namespace ChessCore.FindValidMoves;
 
-public class ValidMovesFinder
+public static class ValidMovesFinder
 {
     public static List<Move> GetValidMoveFrom(State state, int position)
     {
@@ -196,10 +196,9 @@ public class ValidMovesFinder
         List<int> moves = new List<int>();
         int color = state.board[position] & Piece.ColorFilter;
 
-        int slidingPosition;
         foreach (int direction in steps)
         {
-            slidingPosition = position;
+            var slidingPosition = position;
 
             if (BoardHelper.IsNotGettingOutOfTheBoard(slidingPosition, direction))
             {
@@ -217,10 +216,9 @@ public class ValidMovesFinder
         List<int> moves = new List<int>();
         int color = state.board[position] & Piece.ColorFilter;
 
-        int slidingPosition;
         foreach (int direction in slides)
         {
-            slidingPosition = position;
+            var slidingPosition = position;
             while (BoardHelper.IsNotGettingOutOfTheBoard(slidingPosition, direction))
             {
                 slidingPosition += direction;
@@ -232,7 +230,6 @@ public class ValidMovesFinder
                 if ((state.board[slidingPosition] & Piece.ColorFilter) != color)
                 {
                     moves.Add(MoveHelper.CreateMove(position, slidingPosition, 1, tags));
-                    break;
                 }
                 break;
             }
