@@ -16,7 +16,7 @@ namespace ChessView.Views.GameView.ViewState
             highlighted = new bool[64];
             highlighted[GetDrawPosition(selected)] = true;
 
-            possibleMoves = ValidMovesFinder.GetValidMoveFrom(user.state, selected);
+            possibleMoves = ValidMovesFinder.GetValidMoveFrom(User.State, selected);
 
             foreach (Move move in possibleMoves)
             {
@@ -26,7 +26,7 @@ namespace ChessView.Views.GameView.ViewState
 
         override public BaseViewState? HandleClick(SFML.Window.MouseButtonEventArgs e)
         {
-            int position = GetDrawPosition(mainView.GetIndexClicked(e));
+            int position = GetDrawPosition(MainView.GetIndexClicked(e));
             if (!IsPositionValid(position)) return this;
 
             foreach (Move move in possibleMoves)
@@ -35,18 +35,18 @@ namespace ChessView.Views.GameView.ViewState
                 {
                     if (move.IsPromotion())
                     {
-                        return new Promotion(mainView, user, move);
+                        return new Promotion(MainView, User, move);
                     }
-                    user.Play(move);
-                    return new ComputerTurn(mainView, user);
+                    User.Play(move);
+                    return new ComputerTurn(MainView, User);
                 }
             }
 
-            int piece = user.state.board[position];
+            int piece = User.State.board[position];
             if (piece == 0)
-                return new Neutral(mainView, user);
-            else if ((piece & Piece.ColorFilter) == (user.state.board[selected] & Piece.ColorFilter))
-                return new Selected(mainView, user,position);
+                return new Neutral(MainView, User);
+            else if ((piece & Piece.ColorFilter) == (User.State.board[selected] & Piece.ColorFilter))
+                return new Selected(MainView, User,position);
             return null;
         }
     }

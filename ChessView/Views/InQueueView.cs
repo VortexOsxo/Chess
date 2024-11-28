@@ -14,7 +14,7 @@ namespace ChessView.Views
 
         public InQueueView()
         {
-            queueText = new Text("Currently in queue", Config.Font);
+            queueText = Utils.CreateText("Currently in queue", new Vector2f(0, 50));
             var left = (int)((Config.WindowWidth - queueText.GetGlobalBounds().Width) / 2);
             queueText.Position = new Vector2f(left, 50);
             
@@ -22,7 +22,11 @@ namespace ChessView.Views
 
             var buttonLeft = (Config.WindowWidth - Config.ButtonWidth) / 2;
 
-            buttons.Add(new Button(new Vector2f(buttonLeft, 300), "Leave Queue", () => new HomeView()));
+            buttons.Add(new Button(new Vector2f(buttonLeft, 300), "Leave Queue", () =>
+            {
+                JoinGameService.Instance.LeaveGameQueue();
+                return new HomeView();
+            }));
         }
 
 

@@ -9,40 +9,32 @@ namespace ChessView
         bool bJoinedGame = false;
         int color = 0;
 
-        static public JoinGameService Instance {  get { return instance; } }
-        static private JoinGameService instance = new JoinGameService();
+        public static JoinGameService Instance { get; } = new JoinGameService();
 
         public void AttemptToJoinGame(Messages joinGameMessage)
         {
-            var instance = ClientSocketHandler.Instance;
-            instance.SendMessage((int)joinGameMessage);
-            instance.onMessageReceived += MessageCallback;
+            var clientSocketHandler = ClientSocketHandler.Instance;
+            clientSocketHandler.SendMessage((int)joinGameMessage);
+            clientSocketHandler.onMessageReceived += MessageCallback;
         }
 
         public void LeaveGameQueue()
         {
-            var instance = ClientSocketHandler.Instance;
-            instance.SendMessage((int)Messages.LeaveQueue);
-            instance.onMessageReceived -= MessageCallback;
+            var clientSocketHandler = ClientSocketHandler.Instance;
+            clientSocketHandler.SendMessage((int)Messages.LeaveQueue);
+            clientSocketHandler.onMessageReceived -= MessageCallback;
         }
 
         public View? CanJoinGame()
         {
-            if (bJoinedGame)
-            {
-                return new MainView(color);
-            }
-            return null;
+            return !bJoinedGame ? null : new MainView(color);
         }
 
         private void MessageCallback(int code, int value)
         {
-            if (code == (int)Messages.OnGameJoined)
-            {
-                bJoinedGame = true;
-                color = value;
-            }
+            if (code != (int)Messages.OnGameJoined) return;
+            bJoinedGame = true;
+            color = value;
         }
-
     }
 }

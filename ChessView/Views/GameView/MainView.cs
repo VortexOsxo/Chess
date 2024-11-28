@@ -15,7 +15,7 @@ namespace ChessView.Views.GameView
         private readonly RectangleShape tile = new RectangleShape(new Vector2f(Config.TileSize, Config.TileSize));
 
         //Pieces Variables
-        private Dictionary<int, Sprite> piecesSprite = new Dictionary<int, Sprite>();
+        private readonly Dictionary<int, Sprite> piecesSprite = new Dictionary<int, Sprite>();
         
         // View State Variables
         private ClientPlayer player;
@@ -28,8 +28,7 @@ namespace ChessView.Views.GameView
 
             SetUpPiecesSprite();
 
-            player  = new ClientPlayer(this, color);
-
+            player = new ClientPlayer(this, color);
             SetState(color == Piece.White ? new Neutral(this, player) : new ComputerTurn(this, player));
         }
 
@@ -45,14 +44,10 @@ namespace ChessView.Views.GameView
                 for (int col = 0; col < 8; col++)
                 {
                     DrawBoard(window, row, col);
-                    if (player.color == Piece.White)
-                    {
+                    if (player.Color == Piece.White)
                         DrawPieces(window, row, col);
-                    }
                     else
-                    {
                         DrawPiecesReversed(window, row, col);
-                    }
                 }
             }
             state.Draw(window);
@@ -60,12 +55,8 @@ namespace ChessView.Views.GameView
 
         public View? Update()
         {
-            var newState = state.Update();
-            if (newState != null) SetState(newState);
-
             return null;
         }
-
 
         public View? OnMousePressed(MouseButtonEventArgs e)
         {
@@ -108,9 +99,7 @@ namespace ChessView.Views.GameView
             for (int i = 2; i < 6; ++i)
             {
                 if (startY + i * Config.TileSize < e.Y && startY + (i + 1) * Config.TileSize > e.Y)
-                {
-                    return i | player.color;
-                }
+                    return i | player.Color;
             }
             return 0;
         }
@@ -127,7 +116,7 @@ namespace ChessView.Views.GameView
 
         private void DrawPieces(RenderWindow window, int col, int row)
         {
-            Sprite? sprite = piecesSprite.GetValueOrDefault(player.state.board[row* 8 + col]);
+            Sprite? sprite = piecesSprite.GetValueOrDefault(player.State.board[row* 8 + col]);
             if (sprite == null) return;
 
             sprite.Position = new Vector2f(startX + col * Config.TileSize, startY + row * Config.TileSize);
@@ -136,7 +125,7 @@ namespace ChessView.Views.GameView
 
         private void DrawPiecesReversed(RenderWindow window, int col, int row)
         {
-            Sprite? sprite = piecesSprite.GetValueOrDefault(player.state.board[(7 - row) * 8 + (7 - col)]);
+            Sprite? sprite = piecesSprite.GetValueOrDefault(player.State.board[(7 - row) * 8 + (7 - col)]);
             if (sprite == null) return;
 
             sprite.Position = new Vector2f(startX + (col) * Config.TileSize, startY + (row) * Config.TileSize);
@@ -151,7 +140,7 @@ namespace ChessView.Views.GameView
                 tile.FillColor = i % 2 == 0 ? Config.LightTilesColor : Config.DarkTilesColor;
                 window.Draw(tile);
 
-                Sprite? sprite = piecesSprite.GetValueOrDefault(i | (player.state.whiteToPlay ? Piece.White : Piece.Black));
+                Sprite? sprite = piecesSprite.GetValueOrDefault(i | (player.State.whiteToPlay ? Piece.White : Piece.Black));
                 if (sprite == null) return;
 
                 sprite.Position = tile.Position;

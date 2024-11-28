@@ -7,11 +7,11 @@ namespace ChessView.Views.GameView
 {
     internal class ClientPlayer
     {
-        public State? state = null;
-        public int color = 0;
+        public readonly State State;
+        public readonly int Color = 0;
 
-        private SocketHandler client;
-        private MainView mainView;
+        private readonly SocketHandler client;
+        private readonly MainView mainView;
 
         public ClientPlayer(MainView mainViewIn, int colorIn)
         {
@@ -20,8 +20,8 @@ namespace ChessView.Views.GameView
             client = ClientSocketHandler.Instance;
             client.onMessageReceived = OnMessageReceived;
 
-            state = new State();
-            color = colorIn;
+            State = new State();
+            Color = colorIn;
         }
 
         public void OnMessageReceived(int code, int value)
@@ -29,7 +29,7 @@ namespace ChessView.Views.GameView
             if (code == (int) Messages.OnSelfMovePlayed)
             {
                 int move = value;
-                MoveHelper.ExecuteMove(state, move);
+                MoveHelper.ExecuteMove(State, move);
 
                 mainView.SetState(new ComputerTurn(mainView, this, new Move(move)));
             }
@@ -37,7 +37,7 @@ namespace ChessView.Views.GameView
             else if (code == (int)Messages.OnEnemyMovePlayed)
             {
                 int move = value;
-                MoveHelper.ExecuteMove(state, move);
+                MoveHelper.ExecuteMove(State, move);
 
                 mainView.SetState(new Neutral(mainView, this, new Move(move)));
             }

@@ -6,7 +6,7 @@ namespace ChessView.Widgets;
 
 public class ButtonContainer
 {
-    private List<Button> buttons = new();
+    private readonly List<Button> buttons = new();
 
     public void Add(Button button)
     {

@@ -18,7 +18,6 @@ internal class HomeView : View
         var left = (int)((Config.WindowWidth - homeText.GetGlobalBounds().Width) / 2);
         homeText.Position = new Vector2f(left, 50);
 
-
         var buttonLeft = (Config.WindowWidth - Config.ButtonWidth) / 2;
 
         buttons.Add(new Button(new Vector2f(buttonLeft, 300), "SinglePlayer", () => {

@@ -17,13 +17,13 @@ namespace ChessView.Views.GameView.ViewState
 
         override public BaseViewState? HandleClick(SFML.Window.MouseButtonEventArgs e)
         {
-            int position = GetDrawPosition(mainView.GetIndexClicked(e));
+            int position = GetDrawPosition(MainView.GetIndexClicked(e));
             if (!IsPositionValid(position)) return null;
 
-            int piece = user.state.board[position];
-            if (piece == 0 || (piece & Piece.ColorFilter) != user.color)
+            int piece = User.State.board[position];
+            if (piece == 0 || (piece & Piece.ColorFilter) != User.Color)
                 return null;
-            return new Selected(mainView, user, position);
+            return new Selected(MainView, User, position);
         }
     }
 }
